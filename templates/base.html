@@ -1,0 +1,151 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" data-theme="{{ theme }}">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b4acb'/%3E%3Cpath d='M9 12l7-4 7 4v8l-7 4-7-4z' fill='none' stroke='white' stroke-width='2.2'/%3E%3C/svg%3E">
+  <title>{% block title %}{{ store.shop_name }}{% endblock %} · {{ store.shop_name }}</title>
+  <link rel="stylesheet" href="{% static 'vendor/inter/inter.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+<div class="app">
+  <aside class="sidebar" id="sidebar">
+    <a href="{% url 'dashboard' %}" class="brand">
+      <span class="brand-mark"><i class="bi bi-box-seam"></i></span>
+      <span class="ellipsis">{{ store.shop_name }}<small>Inventory &amp; POS</small></span>
+    </a>
+    <nav class="nav">
+      <a href="{% url 'dashboard' %}" class="{% if nav_section == 'dashboard' %}active{% endif %}"><i class="bi bi-grid-1x2"></i> Dashboard</a>
+      <a href="{% url 'pos' %}" class="{% if nav_section == 'pos' %}active{% endif %}"><i class="bi bi-upc-scan"></i> Point of Sale <kbd class="kbd-hint">F2</kbd></a>
+      <a href="{% url 'order_list' %}" class="{% if nav_section == 'sales' %}active{% endif %}"><i class="bi bi-receipt"></i> Sales</a>
+      <a href="{% url 'report' %}" class="{% if nav_section == 'reports' %}active{% endif %}"><i class="bi bi-bar-chart-line"></i> Reports</a>
+
+      <div class="nav-label">Inventory</div>
+      <a href="{% url 'product_list' %}" class="{% if nav_section == 'products' %}active{% endif %}"><i class="bi bi-boxes"></i> Products</a>
+      <a href="{% url 'alert_list' %}" class="{% if nav_section == 'alerts' %}active{% endif %}">
+        <i class="bi bi-exclamation-triangle"></i> Stock Alerts
+        {% if nav_low_stock %}<span class="count" title="{{ nav_low_stock }} low or out of stock">{{ nav_low_stock }}</span>{% endif %}
+      </a>
+      <a href="{% url 'stock' %}" class="{% if nav_section == 'stock' %}active{% endif %}"><i class="bi bi-box-arrow-in-down"></i> Stock</a>
+      <a href="{% url 'category_list' %}" class="{% if nav_section == 'categories' %}active{% endif %}"><i class="bi bi-tags"></i> Categories</a>
+
+      <div class="nav-label">People</div>
+      <a href="{% url 'customer_list' %}" class="{% if nav_section == 'customers' %}active{% endif %}"><i class="bi bi-people"></i> Customers</a>
+      <a href="{% url 'supplier_list' %}" class="{% if nav_section == 'suppliers' %}active{% endif %}"><i class="bi bi-truck"></i> Suppliers</a>
+
+      <div class="nav-label">System</div>
+      <a href="{% url 'settings' %}" class="{% if nav_section == 'settings' %}active{% endif %}"><i class="bi bi-gear"></i> Settings</a>
+    </nav>
+    <div class="sidebar-footer">
+      <a href="{% url 'settings' %}?tab=account" class="avatar" title="My account">{{ request.user.get_full_name|default:request.user.username|slice:":1" }}</a>
+      <div class="who">
+        <strong class="ellipsis">{{ request.user.get_full_name|default:request.user.username }}</strong>
+        <span>{% if request.user.is_superuser %}Admin{% else %}Staff{% endif %}</span>
+      </div>
+      <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="icon-btn" title="Sign out" aria-label="Sign out"><i class="bi bi-box-arrow-right"></i></button>
+      </form>
+    </div>
+  </aside>
+  <div class="scrim" data-nav-close></div>
+
+  <main class="main">
+    <header class="topbar">
+      <button class="icon-btn menu-btn" data-nav-toggle aria-label="Open menu"><i class="bi bi-list"></i></button>
+      <button type="button" class="search-trigger" data-cmdk aria-label="Search">
+        <i class="bi bi-search"></i>
+        <span>Search products, customers, pages…</span>
+        <kbd>⌘K</kbd>
+      </button>
+      <div class="spacer"></div>
+      <div class="topbar-actions">
+        <a href="{% url 'pos' %}" class="btn btn-primary btn-sm hide-sm"><i class="bi bi-plus-lg"></i> New sale</a>
+        <span class="topbar-divider hide-sm"></span>
+        <a href="{% url 'alert_list' %}" class="icon-btn" title="Stock alerts" aria-label="Stock alerts">
+          <i class="bi bi-bell"></i>
+          {% if nav_low_stock %}<span class="dot-badge">{{ nav_low_stock }}</span>{% endif %}
+        </a>
+        <div class="menu" id="themeMenu">
+          <button type="button" class="icon-btn" data-menu-toggle title="Theme" aria-label="Change theme" aria-haspopup="true">
+            <i class="bi {% if theme == 'midnight' %}bi-moon-stars{% else %}bi-palette{% endif %}"></i>
+          </button>
+          <div class="menu-pop" hidden>
+            <div class="menu-title">Theme</div>
+            {% for key, name, desc, c in themes %}
+            <button type="button" data-set-theme="{{ key }}" class="{% if key == theme %}selected{% endif %}">
+              <span class="swatch-pair"><i style="background:{{ c.0 }}"></i><i style="background:{{ c.2 }}"></i><i style="background:{{ c.3 }}"></i></span>
+              <span><span class="strong">{{ name }}</span><div class="small muted">{{ desc }}</div></span>
+              <i class="bi bi-check2 check-mark"></i>
+            </button>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="content">
+      <div class="container">
+        {% block content %}{% endblock %}
+      </div>
+    </div>
+  </main>
+</div>
+
+<div class="cmdk-backdrop" id="cmdk" hidden>
+  <div class="cmdk" role="dialog" aria-modal="true" aria-label="Search">
+    <div class="cmdk-input">
+      <i class="bi bi-search"></i>
+      <input type="text" id="cmdkInput" placeholder="Search products, customers or jump to a page…" autocomplete="off">
+      <kbd>Esc</kbd>
+    </div>
+    <div class="cmdk-list" id="cmdkList"></div>
+    <div class="cmdk-foot"><span><kbd>↑</kbd> <kbd>↓</kbd> navigate</span><span><kbd>Enter</kbd> open</span><span><kbd>Esc</kbd> close</span></div>
+  </div>
+</div>
+
+<div class="toasts" id="toasts">
+  {% for message in messages %}
+  <div class="toast {% if message.tags == 'error' %}error{% else %}success{% endif %}" role="status">
+    <i class="bi {% if message.tags == 'error' %}bi-exclamation-circle-fill{% else %}bi-check-circle-fill{% endif %}"></i>
+    <div>{{ message }}</div>
+    <button class="close" aria-label="Dismiss"><i class="bi bi-x-lg"></i></button>
+  </div>
+  {% endfor %}
+</div>
+
+<script>
+  window.CSRF = '{{ csrf_token }}';
+  window.SI_URLS = {
+    pos: '{% url "pos" %}',
+    productSearch: '{% url "api_product_search" %}',
+    customerSearch: '{% url "api_customer_search" %}',
+    productBase: '{% url "product_list" %}',
+    customerBase: '{% url "customer_list" %}',
+  };
+  window.SI_PAGES = [
+    ['Dashboard', '{% url "dashboard" %}', 'bi-grid-1x2'],
+    ['Point of Sale', '{% url "pos" %}', 'bi-upc-scan'],
+    ['Sales', '{% url "order_list" %}', 'bi-receipt'],
+    ['Reports', '{% url "report" %}', 'bi-bar-chart-line'],
+    ['Products', '{% url "product_list" %}', 'bi-boxes'],
+    ['Stock alerts (low / out of stock)', '{% url "alert_list" %}', 'bi-exclamation-triangle'],
+    ['Add product', '{% url "product_create" %}', 'bi-plus-square'],
+    ['Stock In', '{% url "stock" %}?tab=in', 'bi-box-seam'],
+    ['Stock adjustment', '{% url "stock" %}?tab=adjust', 'bi-sliders'],
+    ['Stock history', '{% url "stock" %}?tab=history', 'bi-clock-history'],
+    ['Categories', '{% url "category_list" %}', 'bi-tags'],
+    ['Customers', '{% url "customer_list" %}', 'bi-people'],
+    ['Suppliers', '{% url "supplier_list" %}', 'bi-truck'],
+    ['Settings', '{% url "settings" %}', 'bi-gear'],
+    ['Change password', '{% url "settings" %}?tab=account', 'bi-shield-lock'],
+    ['Appearance / theme', '{% url "settings" %}?tab=appearance', 'bi-palette'],
+  ];
+</script>
+<script src="{% static 'js/app.js' %}"></script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

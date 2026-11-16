@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Customers{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Customers</h1>
+    <p>{{ total }} customer{{ total|pluralize }} — added here or at the POS by phone or name.</p>
+  </div>
+  <div class="actions">
+    <a href="{% url 'customer_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add customer</a>
+  </div>
+</div>
+
+<form method="get" class="toolbar">
+  <div class="input-icon" style="flex: 1 1 240px; max-width: 380px">
+    <i class="bi bi-search"></i>
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search name or phone">
+  </div>
+  <div class="seg">
+    <a href="?sort=spent{% if query %}&q={{ query|urlencode }}{% endif %}" class="{% if sort == 'spent' %}active{% endif %}">Top spenders</a>
+    <a href="?sort=recent{% if query %}&q={{ query|urlencode }}{% endif %}" class="{% if sort == 'recent' %}active{% endif %}">Recent</a>
+    <a href="?sort=name{% if query %}&q={{ query|urlencode }}{% endif %}" class="{% if sort == 'name' %}active{% endif %}">A–Z</a>
+  </div>
+</form>
+
+<div class="card">
+  <div class="table-wrap">
+    {% if page_obj.object_list %}
+    <table class="table hover">
+      <thead><tr><th>Customer</th><th>Phone</th><th class="text-right">Orders</th><th class="text-right">Total spent</th><th>Last visit</th><th></th></tr></thead>
+      <tbody>
+        {% for c in page_obj %}
+        <tr>
+          <td>
+            <div class="cell-with-thumb">
+              <span class="avatar">{{ c|initials }}</span>
+              <div><a href="{% url 'customer_detail' c.pk %}" class="cell-title">{{ c.name|default:"Unnamed" }}</a>{% if c.address %}<div class="cell-sub">{{ c.address }}</div>{% endif %}</div>
+            </div>
+          </td>
+          <td>{{ c.phone|default:"—" }}</td>
+          <td class="text-right">{{ c.orders_count }}</td>
+          <td class="text-right strong">{{ c.spent|default:0|money0 }}</td>
+          <td>{% if c.last_visit %}{{ c.last_visit|date:"j M Y" }}{% else %}<span class="muted">Never</span>{% endif %}</td>
+          <td class="cell-actions">
+            <a href="{% url 'customer_update' c.pk %}" class="icon-btn" title="Edit" aria-label="Edit"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'customer_delete' c.pk %}" class="icon-btn danger" title="Delete" aria-label="Delete"><i class="bi bi-trash3"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-person-heart empty-icon"></i>
+      <h3>{% if query %}No customers match “{{ query }}”{% else %}No customers yet{% endif %}</h3>
+      <p>Enter a phone number or name in the POS and the customer is saved with the sale.</p>
+    </div>
+    {% endif %}
+  </div>
+  {% include 'includes/pagination.html' with noun='customers' %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Stock in · {{ product.name }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'product_list' %}">Products</a><i class="bi bi-chevron-right"></i><a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a><i class="bi bi-chevron-right"></i>Stock in</div>
+<div class="page-head">
+  <div>
+    <h1>Stock in</h1>
+    <p>Receive “{{ product.name }}” — currently <strong>{{ product.quantity }}</strong> in stock. For several products at once use <a href="{% url 'stock' %}?tab=in" class="link">Stock → Stock In</a>.</p>
+  </div>
+</div>
+
+<form method="post" class="card form-card">
+  {% csrf_token %}
+  <div class="form-section">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.quantity.id_for_label }}">Quantity received</label>
+        {{ form.quantity }}
+        {% for e in form.quantity.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.unit_cost.id_for_label }}">Buy price per unit (৳)</label>
+        {{ form.unit_cost }}
+        {% for e in form.unit_cost.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        <div class="help">Becomes the product's buy price. Sell price is {{ product.price|money }}.</div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label for="{{ form.supplier.id_for_label }}">Supplier <span class="optional">optional</span></label>
+      {{ form.supplier }}
+    </div>
+  </div>
+  <div class="card-foot">
+    <a href="{% url 'product_detail' product.pk %}" class="btn btn-ghost">Cancel</a>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-box-arrow-in-down"></i> Receive stock</button>
+  </div>
+</form>
+{% endblock %}

@@ -1,0 +1,381 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Stock{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Stock</h1>
+    <p>Receive purchases, record adjustments and browse the movement ledger.</p>
+  </div>
+</div>
+
+<nav class="seg block stock-tabs" aria-label="Stock sections">
+  <a href="?tab=in" class="{% if tab == 'in' %}active{% endif %}"><i class="bi bi-box-seam"></i> Stock In</a>
+  <a href="?tab=adjust" class="{% if tab == 'adjust' %}active{% endif %}"><i class="bi bi-sliders"></i> Adjustment</a>
+  <a href="?tab=history" class="{% if tab == 'history' %}active{% endif %}"><i class="bi bi-clock-history"></i> History</a>
+</nav>
+
+{% if tab == 'in' %}
+<div class="card">
+  <div class="card-head">
+    <div>
+      <div class="card-title">Stock In (purchase)</div>
+      <div class="card-sub">Receive goods from a supplier. Each line is recorded as an “in” movement with reference “purchase”.</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="supplier">Supplier</label>
+        <select id="supplier" class="form-select">
+          <option value="">No specific supplier</option>
+          {% for s in suppliers %}<option value="{{ s.pk }}">{{ s.name }}</option>{% endfor %}
+        </select>
+      </div>
+      <div class="form-group combo">
+        <label for="addProduct">Add product</label>
+        <div class="input-icon">
+          <i class="bi bi-search"></i>
+          <input type="text" id="addProduct" class="form-control" placeholder="Scan or type to add…" autocomplete="off">
+        </div>
+        <div class="combo-list" id="addList" hidden></div>
+        <div class="help" id="supplierTip">Tip: choose a supplier to narrow the list</div>
+      </div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="text-right">In stock</th>
+          <th>Qty received</th>
+          <th>Unit cost (৳)</th>
+          <th class="text-right">Cost value</th>
+          <th style="width:44px"></th>
+        </tr>
+      </thead>
+      <tbody id="lines"></tbody>
+    </table>
+    <div class="empty sm" id="linesEmpty"><p>No lines yet — search a product above.</p></div>
+  </div>
+  <div class="card-body">
+    <label for="note">Note <span class="optional">optional</span></label>
+    <textarea id="note" class="form-control" placeholder="Invoice no., batch, remarks…" maxlength="255"></textarea>
+  </div>
+  <div class="card-foot">
+    <span class="text-2" id="summary">0 products · 0 units · cost ৳0.00</span>
+    <button type="button" class="btn btn-primary" id="submit" disabled><i class="bi bi-box-seam"></i> Receive stock</button>
+  </div>
+</div>
+
+{% elif tab == 'adjust' %}
+<div class="card">
+  <div class="card-head">
+    <div>
+      <div class="card-title">Stock adjustment</div>
+      <div class="card-sub">Fix quantities after a physical count, or write off damaged, expired or lost items. Every change is logged in History.</div>
+    </div>
+  </div>
+  <div class="card-body">
+    <div class="form-row">
+      <div class="form-group">
+        <label for="reason">Reason</label>
+        <select id="reason" class="form-select">
+          {% for key, label in adjust_reasons %}<option value="{{ key }}">{{ label }}</option>{% endfor %}
+        </select>
+        <div class="help" id="reasonHelp"></div>
+      </div>
+      <div class="form-group combo">
+        <label for="addProduct">Add product</label>
+        <div class="input-icon">
+          <i class="bi bi-search"></i>
+          <input type="text" id="addProduct" class="form-control" placeholder="Scan or type to add…" autocomplete="off">
+        </div>
+        <div class="combo-list" id="addList" hidden></div>
+      </div>
+    </div>
+  </div>
+  <div class="table-wrap">
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th class="text-right">In stock</th>
+          <th id="qtyHead">Counted</th>
+          <th class="text-right">Change</th>
+          <th class="text-right">New stock</th>
+          <th style="width:44px"></th>
+        </tr>
+      </thead>
+      <tbody id="lines"></tbody>
+    </table>
+    <div class="empty sm" id="linesEmpty"><p>No lines yet — search a product above.</p></div>
+  </div>
+  <div class="card-body">
+    <label for="note">Note <span class="optional">optional</span></label>
+    <textarea id="note" class="form-control" placeholder="What happened? e.g. 3 packets torn in delivery" maxlength="255"></textarea>
+  </div>
+  <div class="card-foot">
+    <span class="text-2" id="summary">0 products</span>
+    <button type="button" class="btn btn-primary" id="submit" disabled><i class="bi bi-check2-circle"></i> Save adjustment</button>
+  </div>
+</div>
+
+{% else %}
+<form method="get" class="card card-body mb-2">
+  <input type="hidden" name="tab" value="history">
+  <div class="row">
+    <div class="input-icon" style="flex: 1 1 220px">
+      <i class="bi bi-search"></i>
+      <input type="text" name="q" value="{{ filters.q }}" class="form-control" placeholder="Product, SKU or note">
+    </div>
+    <select name="kind" class="form-select" style="width:auto" aria-label="Type">
+      <option value="">All types</option>
+      {% for key, label in kinds %}<option value="{{ key }}" {% if filters.kind == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <select name="reason" class="form-select" style="width:auto" aria-label="Reference">
+      <option value="">All references</option>
+      {% for key, label in reasons %}<option value="{{ key }}" {% if filters.reason == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+    </select>
+    <input type="date" name="start" value="{{ filters.start }}" class="form-control" style="width:auto" aria-label="From">
+    <span class="muted">to</span>
+    <input type="date" name="end" value="{{ filters.end }}" class="form-control" style="width:auto" aria-label="To">
+    <button class="btn btn-outline"><i class="bi bi-funnel"></i> Filter</button>
+    {% if filters.q or filters.kind or filters.reason or filters.start or filters.end %}<a href="?tab=history" class="btn btn-ghost">Clear</a>{% endif %}
+  </div>
+</form>
+
+<div class="card">
+  <div class="card-head">
+    <div>
+      <div class="card-title">Movement ledger</div>
+      <div class="card-sub">
+        {{ page_obj.paginator.count }} movement{{ page_obj.paginator.count|pluralize }} ·
+        <span class="qty-pos">+{{ totals.added|num }}</span> in ·
+        <span class="qty-neg">−{{ totals.removed|num }}</span> out
+      </div>
+    </div>
+    <a href="{% url 'stock_history_export' %}?{{ page_qs }}" class="btn btn-outline btn-sm"><i class="bi bi-download"></i> Export CSV</a>
+  </div>
+  <div class="table-wrap mt-1">
+    {% if page_obj.object_list %}
+    <table class="table hover">
+      <thead>
+        <tr>
+          <th>Date</th>
+          <th>Product</th>
+          <th>Type</th>
+          <th>Reference</th>
+          <th class="text-right">Change</th>
+          <th class="text-right">Stock after</th>
+          <th class="text-right">Value</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for m in page_obj %}
+        <tr>
+          <td class="nowrap">{{ m.date|date:"j M Y" }}<div class="cell-sub">{{ m.date|time:"g:i A" }}</div></td>
+          <td>
+            <a href="{% url 'product_detail' m.product_id %}" class="cell-title">{{ m.product.name }}</a>
+            <div class="cell-sub mono">{{ m.product.sku }}</div>
+          </td>
+          <td>
+            {% if m.kind == 'in' %}<span class="badge badge-ok"><i class="bi bi-arrow-down"></i> In</span>
+            {% elif m.kind == 'out' %}<span class="badge badge-info"><i class="bi bi-arrow-up"></i> Out</span>
+            {% else %}<span class="badge badge-warn"><i class="bi bi-sliders"></i> Adjust</span>{% endif %}
+          </td>
+          <td>{{ m.get_reason_display }}</td>
+          <td class="text-right {% if m.quantity > 0 %}qty-pos{% else %}qty-neg{% endif %}">{% if m.quantity > 0 %}+{% else %}−{% endif %}{{ m.quantity|absval }}</td>
+          <td class="text-right strong">{{ m.stock_after }}</td>
+          <td class="text-right">{{ m.value|money }}</td>
+          <td class="small">
+            {% if m.order_id %}<a href="{% url 'order_receipt' m.order_id %}" class="link">Receipt #{{ m.order_id }}</a>{% endif %}
+            {% if m.supplier %}<span class="text-2"><i class="bi bi-truck"></i> {{ m.supplier.name }}</span>{% endif %}
+            {% if m.note %}<div class="muted">{{ m.note|truncatechars:60 }}</div>{% endif %}
+            {% if m.user %}<div class="muted">by {{ m.user.username }}</div>{% endif %}
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-clock-history empty-icon"></i>
+      <h3>No movements found</h3>
+      <p>Try a wider date range or clear the filters.</p>
+    </div>
+    {% endif %}
+  </div>
+  {% include 'includes/pagination.html' with noun='movements' %}
+</div>
+{% endif %}
+{% endblock %}
+
+{% block scripts %}
+{% if tab != 'history' %}
+<script>
+(function () {
+  const MODE = '{{ tab }}';
+  const $ = (id) => document.getElementById(id);
+  let lines = [];
+
+  const REASONS = {
+    count:   { head: 'Counted',       help: 'Enter what is physically on the shelf. The difference is recorded.', sign: 0 },
+    damage:  { head: 'Qty to remove', help: 'Damaged items are removed from stock.', sign: -1 },
+    expired: { head: 'Qty to remove', help: 'Expired items are removed from stock.', sign: -1 },
+    lost:    { head: 'Qty to remove', help: 'Lost or stolen items are removed from stock.', sign: -1 },
+    return:  { head: 'Qty to add',    help: 'Items a customer brought back go back into stock.', sign: 1 },
+    other:   { head: 'Change (+/−)',  help: 'Use a minus sign to remove stock, e.g. -3.', sign: null },
+  };
+  const reason = () => (MODE === 'adjust' ? $('reason').value : null);
+
+  function changeOf(l) {
+    if (MODE === 'in') return l.qty;
+    const r = REASONS[reason()];
+    const v = parseInt(l.value, 10);
+    if (isNaN(v)) return 0;
+    if (r.sign === 0) return v - l.stock;
+    if (r.sign === null) return v;
+    return r.sign * Math.abs(v);
+  }
+
+  function addLine(p) {
+    if (lines.some((l) => l.id === p.id)) {
+      SI.toast('"' + p.name + '" is already in the list.', 'error');
+      return;
+    }
+    lines.push(MODE === 'in'
+      ? { id: p.id, name: p.name, sku: p.sku, stock: p.qty, qty: 1, cost: p.cost }
+      : { id: p.id, name: p.name, sku: p.sku, stock: p.qty, value: reason() === 'count' ? String(p.qty) : '' });
+    render();
+    const target = $('lines').querySelector('tr:last-child input[data-f]');
+    if (target) { target.focus(); target.select(); }
+  }
+
+  function render() {
+    $('lines').innerHTML = lines.map((l, i) => {
+      const head = '<td><div class="cell-title">' + SI.escape(l.name) + '</div><div class="cell-sub mono">' + SI.escape(l.sku || '') + '</div></td>' +
+                   '<td class="text-right">' + l.stock + '</td>';
+      const remove = '<td class="text-right"><button type="button" class="icon-btn danger" data-remove="' + i + '" aria-label="Remove"><i class="bi bi-x-lg"></i></button></td>';
+      if (MODE === 'in') {
+        return '<tr>' + head +
+          '<td><input type="number" class="form-control qty" min="1" data-f="qty" data-i="' + i + '" value="' + l.qty + '"></td>' +
+          '<td><input type="number" class="form-control sm" style="width:120px" min="0" step="0.01" data-f="cost" data-i="' + i + '" value="' + l.cost + '"></td>' +
+          '<td class="text-right strong" data-value="' + i + '">' + SI.money(l.qty * l.cost) + '</td>' + remove + '</tr>';
+      }
+      const c = changeOf(l);
+      return '<tr>' + head +
+        '<td><input type="number" class="form-control qty" data-f="value" data-i="' + i + '" value="' + SI.escape(l.value) + '"' + (REASONS[reason()].sign === null ? '' : ' min="0"') + '></td>' +
+        '<td class="text-right ' + (c > 0 ? 'qty-pos' : c < 0 ? 'qty-neg' : 'muted') + '" data-change="' + i + '">' + (c > 0 ? '+' : c < 0 ? '−' : '') + Math.abs(c) + '</td>' +
+        '<td class="text-right strong" data-new="' + i + '">' + (l.stock + c) + '</td>' + remove + '</tr>';
+    }).join('');
+    $('linesEmpty').hidden = lines.length > 0;
+    summary();
+  }
+
+  function summary() {
+    const btn = $('submit');
+    if (MODE === 'in') {
+      const units = lines.reduce((s, l) => s + (Number(l.qty) || 0), 0);
+      const cost = lines.reduce((s, l) => s + (Number(l.qty) || 0) * (Number(l.cost) || 0), 0);
+      $('summary').textContent = lines.length + ' product' + (lines.length === 1 ? '' : 's') + ' · ' + units + ' units · cost ' + SI.money(cost);
+      btn.disabled = !lines.length || lines.some((l) => !(Number(l.qty) >= 1));
+    } else {
+      const changed = lines.filter((l) => changeOf(l) !== 0);
+      const bad = lines.some((l) => l.stock + changeOf(l) < 0);
+      const net = changed.reduce((s, l) => s + changeOf(l), 0);
+      $('summary').textContent = lines.length + ' product' + (lines.length === 1 ? '' : 's') + ' · ' + changed.length + ' changed · net ' + (net > 0 ? '+' : '') + net + ' units' + (bad ? ' · some lines would go below zero' : '');
+      $('summary').className = bad ? 'text-loss' : 'text-2';
+      btn.disabled = !changed.length || bad;
+    }
+  }
+
+  $('lines').addEventListener('input', (e) => {
+    const i = e.target.dataset.i;
+    if (i === undefined) return;
+    const l = lines[Number(i)];
+    l[e.target.dataset.f] = e.target.value;
+    if (MODE === 'in') {
+      $('lines').querySelector('[data-value="' + i + '"]').textContent = SI.money((Number(l.qty) || 0) * (Number(l.cost) || 0));
+    } else {
+      const c = changeOf(l);
+      const cell = $('lines').querySelector('[data-change="' + i + '"]');
+      cell.textContent = (c > 0 ? '+' : c < 0 ? '−' : '') + Math.abs(c);
+      cell.className = 'text-right ' + (c > 0 ? 'qty-pos' : c < 0 ? 'qty-neg' : 'muted');
+      const n = $('lines').querySelector('[data-new="' + i + '"]');
+      n.textContent = l.stock + c;
+      n.className = 'text-right strong' + (l.stock + c < 0 ? ' text-loss' : '');
+    }
+    summary();
+  });
+  $('lines').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && e.target.matches('input')) { e.preventDefault(); $('addProduct').focus(); }
+  });
+  $('lines').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-remove]');
+    if (b) { lines.splice(Number(b.dataset.remove), 1); render(); }
+  });
+
+  const supplier = $('supplier');
+  SI.combo({
+    input: $('addProduct'),
+    list: $('addList'),
+    url: (q) => '{% url "api_product_search" %}?q=' + encodeURIComponent(q) + (supplier && supplier.value ? '&supplier=' + supplier.value : ''),
+    render: (p) =>
+      '<span class="thumb">' + SI.escape(p.name.slice(0, 1)) + '</span>' +
+      '<div style="min-width:0"><div class="ellipsis strong">' + SI.escape(p.name) + '</div><div class="meta mono">' + SI.escape(p.sku) + ' · ' + SI.escape(p.category) + '</div></div>' +
+      '<div class="right"><div class="strong">' + p.qty + ' in stock</div><div class="meta">cost ' + SI.money(p.cost) + '</div></div>',
+    onPick: addLine,
+  });
+  if (supplier) supplier.addEventListener('change', () => {
+    $('supplierTip').textContent = supplier.value ? 'Showing products from ' + supplier.options[supplier.selectedIndex].text : 'Tip: choose a supplier to narrow the list';
+  });
+
+  if (MODE === 'adjust') {
+    const applyReason = () => {
+      const r = REASONS[reason()];
+      $('qtyHead').textContent = r.head;
+      $('reasonHelp').textContent = r.help;
+      lines.forEach((l) => { l.value = reason() === 'count' ? String(l.stock) : ''; });
+      render();
+    };
+    $('reason').addEventListener('change', applyReason);
+    applyReason();
+  }
+
+  $('submit').addEventListener('click', async () => {
+    const btn = $('submit');
+    btn.disabled = true;
+    const original = btn.innerHTML;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Saving…';
+    let res;
+    if (MODE === 'in') {
+      res = await SI.postJSON('{% url "stock_receive" %}', {
+        supplier: supplier.value || null,
+        note: $('note').value,
+        lines: lines.map((l) => ({ id: l.id, qty: Number(l.qty), cost: l.cost })),
+      });
+    } else {
+      const r = reason();
+      res = await SI.postJSON('{% url "stock_adjust" %}', {
+        reason: r,
+        note: $('note').value,
+        lines: lines.filter((l) => changeOf(l) !== 0).map((l) =>
+          r === 'count' ? { id: l.id, counted: Number(l.value) } : { id: l.id, delta: changeOf(l) }),
+      });
+    }
+    if (res.ok) { window.location.href = res.redirect; return; }
+    SI.toast(res.error || 'Could not save.', 'error');
+    btn.innerHTML = original;
+    summary();
+  });
+
+  render();
+  $('addProduct').focus();
+})();
+</script>
+{% endif %}
+{% endblock %}

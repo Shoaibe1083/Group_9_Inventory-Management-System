@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}{{ customer }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'customer_list' %}">Customers</a><i class="bi bi-chevron-right"></i>{{ customer }}</div>
+<div class="page-head">
+  <div class="row" style="gap:14px">
+    <span class="avatar" style="width:52px;height:52px;font-size:18px">{{ customer|initials }}</span>
+    <div>
+      <h1>{{ customer.name|default:customer.phone }}</h1>
+      <p>{% if customer.name and customer.phone %}{{ customer.phone }} · {% endif %}Customer since {{ customer.created_at|date:"M Y" }}</p>
+    </div>
+  </div>
+  <div class="actions">
+    <a href="{% url 'customer_update' customer.pk %}" class="btn btn-outline"><i class="bi bi-pencil"></i> Edit</a>
+  </div>
+</div>
+
+<div class="grid grid-3">
+  <div class="card kpi"><div><div class="label">Total spent</div><div class="value">{{ stats.spent|default:0|money0 }}</div></div><div class="kpi-icon tone-green"><i class="bi bi-cash-stack"></i></div></div>
+  <div class="card kpi"><div><div class="label">Orders</div><div class="value">{{ stats.count }}</div></div><div class="kpi-icon tone-violet"><i class="bi bi-receipt"></i></div></div>
+  <div class="card kpi"><div><div class="label">Last visit</div><div class="value" style="font-size:20px">{% if stats.last %}{{ stats.last|date:"j M Y" }}{% else %}—{% endif %}</div></div><div class="kpi-icon tone-blue"><i class="bi bi-calendar3"></i></div></div>
+</div>
+
+<div class="card mt-3">
+  <div class="card-head"><div class="card-title">Purchase history</div></div>
+  <div class="table-wrap mt-1">
+    {% if orders %}
+    <table class="table hover">
+      <thead><tr><th>Receipt</th><th>Date</th><th>Payment</th><th class="text-right">Items</th><th class="text-right">Total</th></tr></thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td><a href="{% url 'order_receipt' o.pk %}" class="cell-title mono">#{{ o.pk }}</a></td>
+          <td>{{ o.date|date:"j M Y, g:i A" }}</td>
+          <td>{{ o.get_payment_method_display }}</td>
+          <td class="text-right">{{ o.lines }}</td>
+          <td class="text-right strong">{{ o.total|money }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty sm"><p>No purchases yet.</p></div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

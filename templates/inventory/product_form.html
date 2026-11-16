@@ -1,0 +1,126 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'product_list' %}">Products</a><i class="bi bi-chevron-right"></i>{% if product %}<a href="{% url 'product_detail' product.pk %}">{{ product.name }}</a><i class="bi bi-chevron-right"></i>Edit{% else %}New{% endif %}</div>
+<div class="page-head">
+  <div>
+    <h1>{{ title }}</h1>
+    <p>{% if product %}Update details for “{{ product.name }}”.{% else %}Fill in the details to add a new product.{% endif %}</p>
+  </div>
+</div>
+
+<form method="post" class="card form-card">
+  {% csrf_token %}
+  {% if form.non_field_errors %}<div class="form-errors" style="margin:22px 22px 0">{{ form.non_field_errors }}</div>{% endif %}
+  <div class="form-section">
+    <h3>Basics</h3>
+    <p>How the product appears in the POS and on receipts.</p>
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Product name</label>
+      {{ form.name }}
+      {% for e in form.name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.category.id_for_label }}">Category</label>
+        {{ form.category }}
+        {% for e in form.category.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        <div class="help"><a href="{% url 'category_list' %}" class="link">Manage categories</a></div>
+      </div>
+      <div class="form-group">
+        <label for="{{ form.supplier.id_for_label }}">Supplier <span class="optional">optional</span></label>
+        {{ form.supplier }}
+        {% for e in form.supplier.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Codes</h3>
+    <p>Scan the barcode printed on the pack. Leave empty and the system creates an in-store code.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.barcode.id_for_label }}">Barcode</label>
+        {{ form.barcode }}
+        {% for e in form.barcode.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.sku.id_for_label }}">SKU</label>
+        {{ form.sku }}
+        {% for e in form.sku.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+  </div>
+
+  <div class="form-section">
+    <h3>Pricing</h3>
+    <p>Profit is worked out from these at the moment of every sale.</p>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.cost_price.id_for_label }}">Buy price (৳)</label>
+        {{ form.cost_price }}
+        {% for e in form.cost_price.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.price.id_for_label }}">Sell price (৳)</label>
+        {{ form.price }}
+        {% for e in form.price.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+    </div>
+    <div class="profit-hint" id="profitHint" hidden></div>
+  </div>
+
+  <div class="form-section">
+    <h3>Stock</h3>
+    <p>{% if product %}Currently <strong>{{ product.quantity }}</strong> in stock. To change it, use <a href="{% url 'stock' %}?tab=in" class="link">Stock In</a> or <a href="{% url 'stock' %}?tab=adjust" class="link">Adjustment</a> so it's recorded in the ledger.{% else %}Opening stock is recorded in the stock ledger.{% endif %}</p>
+    <div class="form-row">
+      {% if form.quantity %}
+      <div class="form-group">
+        <label for="{{ form.quantity.id_for_label }}">{{ form.quantity.label }}</label>
+        {{ form.quantity }}
+        {% for e in form.quantity.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+      </div>
+      {% endif %}
+      <div class="form-group">
+        <label for="{{ form.low_stock_threshold.id_for_label }}">Low stock alert at</label>
+        {{ form.low_stock_threshold }}
+        {% for e in form.low_stock_threshold.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        <div class="help">You'll see an alert when stock falls to this number.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card-foot">
+    <a href="{% if product %}{% url 'product_detail' product.pk %}{% else %}{% url 'product_list' %}{% endif %}" class="btn btn-ghost">Cancel</a>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Save product</button>
+  </div>
+</form>
+{% endblock %}
+
+{% block scripts %}
+<script>
+  // Live profit preview while typing buy / sell price
+  const buy = document.getElementById('{{ form.cost_price.id_for_label }}');
+  const sell = document.getElementById('{{ form.price.id_for_label }}');
+  const hint = document.getElementById('profitHint');
+  function updateHint() {
+    const b = parseFloat(buy.value), s = parseFloat(sell.value);
+    if (isNaN(b) || isNaN(s) || s === 0) { hint.hidden = true; return; }
+    const profit = s - b;
+    const pct = (profit / s * 100).toFixed(1);
+    hint.hidden = false;
+    hint.className = 'profit-hint ' + (profit < 0 ? 'loss' : 'gain');
+    hint.textContent = profit < 0
+      ? 'Loss of ' + SI.money(Math.abs(profit)) + ' per unit'
+      : 'Profit ' + SI.money(profit) + ' per unit · ' + pct + '% margin';
+  }
+  buy.addEventListener('input', updateHint);
+  sell.addEventListener('input', updateHint);
+  updateHint();
+  // A barcode scanner sends Enter after the code — don't submit the form on it.
+  document.getElementById('{{ form.barcode.id_for_label }}').addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); document.getElementById('{{ form.sku.id_for_label }}').focus(); }
+  });
+</script>
+{% endblock %}

@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Delete product{% endblock %}
+
+{% block content %}
+<div class="page-head"><div><h1>Delete product</h1><p>This can't be undone.</p></div></div>
+
+<form method="post" class="card form-card">
+  {% csrf_token %}
+  <div class="form-section">
+    <div class="notice danger">
+      <i class="bi bi-exclamation-triangle-fill"></i>
+      <div>
+        Delete <strong>{{ product.name }}</strong>?
+        <div class="mt-1">Its {{ product.sales.count }} sale line{{ product.sales.count|pluralize }} and {{ product.movements.count }} stock movement{{ product.movements.count|pluralize }} will also be removed, which changes past reports. If you only stopped selling it, consider adjusting its stock to zero instead.</div>
+      </div>
+    </div>
+  </div>
+  <div class="card-foot">
+    <a href="{% url 'product_detail' product.pk %}" class="btn btn-ghost">Cancel</a>
+    <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"></i> Yes, delete</button>
+  </div>
+</form>
+{% endblock %}

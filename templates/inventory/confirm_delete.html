@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Delete {{ kind }}{% endblock %}
+
+{% block content %}
+<div class="page-head"><div><h1>Delete {{ kind }}</h1><p>This can't be undone.</p></div></div>
+
+<form method="post" class="card form-card">
+  {% csrf_token %}
+  <div class="form-section">
+    <div class="notice danger"><i class="bi bi-exclamation-triangle-fill"></i><div>Delete <strong>{{ object_name }}</strong>?<div class="mt-1">{{ note }}</div></div></div>
+  </div>
+  <div class="card-foot">
+    <a href="{% url cancel_url %}" class="btn btn-ghost">Cancel</a>
+    <button type="submit" class="btn btn-danger"><i class="bi bi-trash3"></i> Yes, delete</button>
+  </div>
+</form>
+{% endblock %}

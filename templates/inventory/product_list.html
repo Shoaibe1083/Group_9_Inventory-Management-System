@@ -1,0 +1,101 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Products{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Products</h1>
+    <p>Your catalogue — prices, codes and stock levels.</p>
+  </div>
+  <div class="actions">
+    <a href="{% url 'products_export' %}" class="btn btn-outline"><i class="bi bi-download"></i> Export CSV</a>
+    <a href="{% url 'product_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add product</a>
+  </div>
+</div>
+
+<form method="get" class="toolbar">
+  <div class="seg">
+    {% for key, label, count in statuses %}
+    <a href="?{% if key %}status={{ key }}{% endif %}{% if query %}&q={{ query|urlencode }}{% endif %}{% if category %}&category={{ category }}{% endif %}" class="{% if key == status %}active{% endif %}">
+      {{ label }} <span class="pill">{{ count }}</span>
+    </a>
+    {% endfor %}
+  </div>
+  {% if status %}<input type="hidden" name="status" value="{{ status }}">{% endif %}
+  <div class="input-icon" style="flex: 1 1 240px; max-width: 380px">
+    <i class="bi bi-search"></i>
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Search name, SKU or scan barcode">
+  </div>
+  <select name="category" class="form-select" style="width:auto" onchange="this.form.submit()" aria-label="Category">
+    <option value="">All categories</option>
+    {% for c in categories %}<option value="{{ c.pk }}" {% if category == c.pk|stringformat:'d' %}selected{% endif %}>{{ c.name }}</option>{% endfor %}
+  </select>
+</form>
+
+<div class="card">
+  <div class="table-wrap">
+    {% if page_obj.object_list %}
+    <table class="table hover">
+      <thead>
+        <tr>
+          <th>Product</th>
+          <th>Category</th>
+          <th class="text-right">Buy</th>
+          <th class="text-right">Sell</th>
+          <th class="text-right">Margin</th>
+          <th class="text-right">In stock</th>
+          <th>Status</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for p in page_obj %}
+        <tr>
+          <td>
+            <div class="cell-with-thumb">
+              <span class="thumb">{{ p.name|initials }}</span>
+              <div style="min-width:0">
+                <a href="{% url 'product_detail' p.pk %}" class="cell-title">{{ p.name }}</a>
+                <div class="cell-sub mono">{{ p.sku }}{% if p.barcode %} · {{ p.barcode }}{% endif %}</div>
+              </div>
+            </div>
+          </td>
+          <td><span class="badge badge-neutral">{{ p.category.name }}</span></td>
+          <td class="text-right text-2">{{ p.cost_price|money }}</td>
+          <td class="text-right strong">{{ p.price|money }}</td>
+          <td class="text-right {% if p.profit_per_unit < 0 %}text-loss{% else %}text-gain{% endif %}">{% if p.price %}{{ p.profit_per_unit|percent_of:p.price|floatformat:1 }}%{% else %}—{% endif %}</td>
+          <td class="text-right"><strong>{{ p.quantity }}</strong></td>
+          <td>
+            {% if p.quantity == 0 %}<span class="badge badge-danger"><i class="bi bi-x-circle-fill"></i> Out of stock</span>
+            {% elif p.is_low_stock %}<span class="badge badge-warn"><i class="bi bi-exclamation-triangle-fill"></i> Low stock</span>
+            {% else %}<span class="badge badge-ok"><i class="bi bi-check-circle-fill"></i> In stock</span>{% endif %}
+          </td>
+          <td class="cell-actions">
+            <a href="{% url 'stock_in' p.pk %}" class="icon-btn" title="Stock in" aria-label="Stock in {{ p.name }}"><i class="bi bi-box-arrow-in-down"></i></a>
+            {% if p.quantity %}<a href="{% url 'stock_out' p.pk %}" class="icon-btn" title="Sell in POS" aria-label="Sell {{ p.name }}"><i class="bi bi-cart-plus"></i></a>{% endif %}
+            <a href="{% url 'product_update' p.pk %}" class="icon-btn" title="Edit" aria-label="Edit {{ p.name }}"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'product_delete' p.pk %}" class="icon-btn danger" title="Delete" aria-label="Delete {{ p.name }}"><i class="bi bi-trash3"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-box empty-icon"></i>
+      {% if query or status or category %}
+      <h3>No products match</h3>
+      <p>Try a different search, or clear the filters.</p>
+      <a href="{% url 'product_list' %}" class="btn btn-outline btn-sm">Clear filters</a>
+      {% else %}
+      <h3>No products yet</h3>
+      <p>Add your first product to start selling and tracking stock.</p>
+      <a href="{% url 'product_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add product</a>
+      {% endif %}
+    </div>
+    {% endif %}
+  </div>
+  {% include 'includes/pagination.html' with noun='products' %}
+</div>
+{% endblock %}

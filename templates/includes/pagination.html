@@ -1,0 +1,16 @@
+{% load ui %}
+{% if page_obj.paginator.num_pages > 1 %}
+<div class="card-foot pagination">
+  <span>Showing {{ page_obj.start_index }}–{{ page_obj.end_index }} of {{ page_obj.paginator.count }}{% if noun %} {{ noun }}{% endif %}</span>
+  <div class="pages">
+    {% if page_obj.has_previous %}<a href="?{% if page_qs %}{{ page_qs }}&{% endif %}page={{ page_obj.previous_page_number }}" aria-label="Previous page"><i class="bi bi-chevron-left"></i></a>{% endif %}
+    {% page_range page_obj as pages %}
+    {% for num in pages %}
+      {% if num is None %}<span class="gap">…</span>
+      {% elif num == page_obj.number %}<span class="current">{{ num }}</span>
+      {% else %}<a href="?{% if page_qs %}{{ page_qs }}&{% endif %}page={{ num }}">{{ num }}</a>{% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}<a href="?{% if page_qs %}{{ page_qs }}&{% endif %}page={{ page_obj.next_page_number }}" aria-label="Next page"><i class="bi bi-chevron-right"></i></a>{% endif %}
+  </div>
+</div>
+{% endif %}

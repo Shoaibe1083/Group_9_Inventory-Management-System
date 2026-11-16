@@ -1,0 +1,59 @@
+{% load static ui %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%232b4acb'/%3E%3Cpath d='M9 12l7-4 7 4v8l-7 4-7-4z' fill='none' stroke='white' stroke-width='2.2'/%3E%3C/svg%3E">
+  <title>Receipt #{{ order.pk }} · {{ store.shop_name }}</title>
+  <link rel="stylesheet" href="{% static 'vendor/inter/inter.css' %}">
+  <link rel="stylesheet" href="{% static 'vendor/bootstrap-icons/bootstrap-icons.min.css' %}">
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body class="receipt-page">
+  <div class="receipt-actions no-print">
+    <a href="{% url 'order_list' %}" class="btn btn-outline btn-sm"><i class="bi bi-arrow-left"></i> Sales</a>
+    <div class="row">
+      <a href="{% url 'pos' %}" class="btn btn-outline btn-sm"><i class="bi bi-upc-scan"></i> New sale</a>
+      <button onclick="window.print()" class="btn btn-primary btn-sm"><i class="bi bi-printer"></i> Print</button>
+    </div>
+  </div>
+
+  <div class="receipt">
+    <div class="receipt-head">
+      <div class="shop">{{ store.shop_name }}</div>
+      {% if store.address %}<div class="meta">{{ store.address }}</div>{% endif %}
+      {% if store.phone %}<div class="meta">{{ store.phone }}</div>{% endif %}
+    </div>
+
+    <div class="receipt-row"><span>Receipt</span><span class="mono">#{{ order.pk }}</span></div>
+    <div class="receipt-row"><span>Date</span><span>{{ order.date|date:"j M Y, g:i A" }}</span></div>
+    {% if order.customer %}<div class="receipt-row"><span>Customer</span><span>{{ order.customer }}</span></div>{% endif %}
+    {% if order.user %}<div class="receipt-row"><span>Cashier</span><span>{{ order.user.get_full_name|default:order.user.username }}</span></div>{% endif %}
+
+    <div class="receipt-line"></div>
+
+    {% for item in items %}
+    <div class="receipt-item">
+      <div class="name">{{ item.product.name }}</div>
+      <div class="receipt-row">
+        <span>{{ item.quantity_sold }} × {{ item.list_price|money }}</span>
+        <span>{{ item.list_total|money }}</span>
+      </div>
+    </div>
+    {% endfor %}
+
+    <div class="receipt-line"></div>
+    <div class="receipt-row"><span>Subtotal ({{ units }} unit{{ units|pluralize }})</span><span>{{ order.subtotal|money }}</span></div>
+    {% if order.discount %}<div class="receipt-row"><span>Discount</span><span>−{{ order.discount|money }}</span></div>{% endif %}
+    <div class="receipt-row total"><span>Total</span><span>{{ order.total|money }}</span></div>
+    <div class="receipt-row"><span>Paid ({{ order.get_payment_method_display }})</span><span>{{ order.paid|money }}</span></div>
+    {% if order.change %}<div class="receipt-row"><span>Change</span><span>{{ order.change|money }}</span></div>{% endif %}
+
+    <div class="receipt-line"></div>
+    <p class="receipt-thanks">{{ store.receipt_footer }}</p>
+    <div class="barcode-text">*{{ order.pk|stringformat:"06d" }}*</div>
+  </div>
+  {% if just_sold %}<script>window.addEventListener('load', () => window.print());</script>{% endif %}
+</body>
+</html>

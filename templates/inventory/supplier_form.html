@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<div class="breadcrumb"><a href="{% url 'supplier_list' %}">Suppliers</a><i class="bi bi-chevron-right"></i>{% if supplier %}{{ supplier.name }}{% else %}New{% endif %}</div>
+<div class="page-head"><div><h1>{{ title }}</h1><p>{% if supplier %}Update details for “{{ supplier.name }}”.{% else %}Save a supplier's contact details.{% endif %}</p></div></div>
+
+<form method="post" class="card form-card">
+  {% csrf_token %}
+  <div class="form-section">
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Supplier name</label>
+      {{ form.name }}
+      {% for e in form.name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+    </div>
+    <div class="form-row">
+      <div class="form-group">
+        <label for="{{ form.phone.id_for_label }}">Phone <span class="optional">optional</span></label>
+        {{ form.phone }}
+      </div>
+      <div class="form-group">
+        <label for="{{ form.address.id_for_label }}">Address <span class="optional">optional</span></label>
+        {{ form.address }}
+      </div>
+    </div>
+  </div>
+  <div class="card-foot">
+    <a href="{% url 'supplier_list' %}" class="btn btn-ghost">Cancel</a>
+    <button type="submit" class="btn btn-primary"><i class="bi bi-check-lg"></i> Save supplier</button>
+  </div>
+</form>
+{% endblock %}

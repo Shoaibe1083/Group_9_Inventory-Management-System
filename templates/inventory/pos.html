@@ -1,0 +1,430 @@
+{% extends 'base.html' %}
+{% block title %}Point of Sale{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Point of Sale</h1>
+    <p>Scan, search, sell. Works with a USB barcode scanner.</p>
+  </div>
+  <div class="actions">
+    <a href="{% url 'order_list' %}?period=today" class="btn btn-outline"><i class="bi bi-clock-history"></i> Today's sales</a>
+  </div>
+</div>
+
+<div class="pos-grid">
+  <div class="stack">
+    <div class="card">
+      <div class="scan-bar">
+        <div class="input-icon scan-input">
+          <i class="bi bi-upc-scan"></i>
+          <input type="text" id="scan" class="form-control" placeholder="Scan barcode… (Enter)" autocomplete="off" autofocus aria-label="Scan barcode or SKU">
+        </div>
+        <div class="combo">
+          <div class="input-icon">
+            <i class="bi bi-search"></i>
+            <input type="text" id="search" class="form-control" placeholder="…or search by name / SKU" autocomplete="off" aria-label="Search products">
+          </div>
+          <div class="combo-list" id="searchList" hidden></div>
+        </div>
+      </div>
+      <div class="scan-status" id="scanStatus"><i class="bi bi-info-circle"></i> Ready to scan</div>
+      {% if quick_products %}
+      <div class="quick-grid" id="quick">
+        {% for p in quick_products %}<button type="button" data-i="{{ forloop.counter0 }}">{{ p.name }}</button>{% endfor %}
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="card">
+      <div class="card-head">
+        <div class="card-title"><i class="bi bi-cart3"></i> Cart <span class="muted" style="font-weight:400" id="cartCount">0 items · 0 units</span></div>
+        <button type="button" class="btn btn-ghost btn-sm" id="clearCart" hidden><i class="bi bi-trash3"></i> Clear</button>
+      </div>
+      <div class="table-wrap mt-1">
+        <table class="table cart-table">
+          <thead>
+            <tr>
+              <th>Product</th>
+              <th class="text-right">Price</th>
+              <th class="text-center">Qty</th>
+              <th class="text-right">Total</th>
+              <th style="width:44px"></th>
+            </tr>
+          </thead>
+          <tbody id="cartBody"></tbody>
+        </table>
+      </div>
+      <div class="empty" id="cartEmpty">
+        <i class="bi bi-upc empty-icon" style="font-size:38px"></i>
+        <p>Scan a barcode or search a product to start.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="pos-side">
+    <div class="card card-body">
+      <div class="card-title" style="margin-bottom:12px">Customer</div>
+      <div class="combo" id="customerPicker">
+        <div class="row" style="flex-wrap:nowrap">
+          <div class="input-icon" style="flex:1">
+            <i class="bi bi-search"></i>
+            <input type="text" id="customerInput" class="form-control" placeholder="Customer phone or name (optional)" autocomplete="off" aria-label="Customer phone or name">
+          </div>
+          <button type="button" class="btn btn-outline" id="customerFind"><i class="bi bi-search"></i> Find</button>
+        </div>
+        <div class="combo-list" id="customerList" hidden></div>
+      </div>
+      <div class="customer-chip" id="customerChip" hidden>
+        <span class="avatar" id="customerAvatar"></span>
+        <div style="flex:1;min-width:0">
+          <div class="strong ellipsis" id="customerName"></div>
+          <div class="small muted" id="customerMeta"></div>
+        </div>
+        <button type="button" class="icon-btn" id="customerClear" aria-label="Remove customer"><i class="bi bi-x-lg"></i></button>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="totals">
+        <div class="line"><span>Subtotal</span><span id="subtotal">৳0.00</span></div>
+        <div class="line">
+          <span>Discount (৳)</span>
+          <input type="number" id="discount" class="form-control no-spin" min="0" step="0.01" placeholder="0.00" aria-label="Discount">
+        </div>
+        <div class="grand"><span>Total</span><strong id="grandTotal">৳0.00</strong></div>
+      </div>
+      <div style="padding: 0 22px 18px">
+        <div class="label-text">Payment</div>
+        <div class="pay-methods">
+          {% for key, label in payment_choices %}
+          <div>
+            <input type="radio" name="payment" id="pay-{{ key }}" value="{{ key }}" {% if forloop.first %}checked{% endif %}>
+            <label for="pay-{{ key }}"><i class="bi {% if key == 'cash' %}bi-cash-coin{% elif key == 'card' %}bi-credit-card{% else %}bi-phone{% endif %}"></i>{{ label }}</label>
+          </div>
+          {% endfor %}
+        </div>
+        <div class="mt-2" id="cashBox">
+          <label for="paid">Cash received <span class="optional">optional</span></label>
+          <input type="number" id="paid" class="form-control no-spin" min="0" step="0.01" placeholder="Exact amount">
+          <div class="cash-quick" id="cashQuick"></div>
+          <div class="change-due" id="changeDue" hidden><span id="changeLabel">Change</span><span id="changeValue"></span></div>
+        </div>
+        <button type="button" class="btn btn-primary btn-lg btn-block mt-2" id="checkout" disabled>
+          <i class="bi bi-cart-check"></i> Complete sale <kbd class="kbd-on-primary">F9</kbd>
+        </button>
+        <p class="small muted text-center mt-1">Stock is deducted and the receipt is shown after completion.</p>
+      </div>
+    </div>
+    <div class="shortcuts">
+      <span><kbd>F2</kbd> scan</span><span><kbd>F3</kbd> search</span><span><kbd>F4</kbd> customer</span><span><kbd>F9</kbd> complete</span><span><kbd>Esc</kbd> close</span>
+    </div>
+  </div>
+</div>
+
+<div class="modal-backdrop" id="doneModal" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="doneTitle">
+    <div class="ok-icon"><i class="bi bi-check-lg"></i></div>
+    <h2 id="doneTitle">Sale completed</h2>
+    <div class="big" id="doneTotal"></div>
+    <div class="muted" id="doneMeta"></div>
+    <div class="actions">
+      <a href="#" class="btn btn-outline" id="doneReceipt" target="_blank"><i class="bi bi-printer"></i> Receipt</a>
+      <button type="button" class="btn btn-primary" id="doneNew"><i class="bi bi-plus-lg"></i> New sale</button>
+    </div>
+    <p class="small muted mt-2">Press <kbd>Enter</kbd> to start the next sale.</p>
+  </div>
+</div>
+
+{{ preload|json_script:"preload" }}
+{{ quick_products|json_script:"quickProducts" }}
+{% endblock %}
+
+{% block scripts %}
+<script>
+(function () {
+  document.body.dataset.pos = '1';
+  const $ = (id) => document.getElementById(id);
+  const URLS = {
+    lookup: '{% url "api_product_lookup" %}',
+    search: '{% url "api_product_search" %}',
+    customers: '{% url "api_customer_search" %}',
+    checkout: '{% url "pos_checkout" %}',
+  };
+  const STORE_KEY = 'si-pos-cart';
+  let cart = [];          // [{id, name, sku, price, qty, stock}]
+  let customer = null;    // {id} or {name, phone}
+  let busy = false;
+
+  const scan = $('scan'), search = $('search');
+
+  function save() {
+    try { sessionStorage.setItem(STORE_KEY, JSON.stringify({ cart, customer })); } catch (e) {}
+  }
+  function restore() {
+    try {
+      const saved = JSON.parse(sessionStorage.getItem(STORE_KEY) || 'null');
+      if (saved) { cart = saved.cart || []; customer = saved.customer || null; }
+    } catch (e) {}
+  }
+
+  function status(text, kind) {
+    const el = $('scanStatus');
+    el.className = 'scan-status' + (kind ? ' ' + kind : '');
+    el.innerHTML = '<i class="bi ' + (kind === 'err' ? 'bi-exclamation-circle' : kind === 'ok' ? 'bi-check-circle' : 'bi-info-circle') + '"></i> ' + SI.escape(text);
+  }
+
+  function add(p, qty = 1) {
+    if (p.qty <= 0) { status('"' + p.name + '" is out of stock.', 'err'); return; }
+    let line = cart.find((l) => l.id === p.id);
+    if (line) {
+      if (line.qty + qty > line.stock) { status('Only ' + line.stock + ' of "' + p.name + '" in stock.', 'err'); return; }
+      line.qty += qty;
+    } else {
+      line = { id: p.id, name: p.name, sku: p.sku, price: Number(p.price), qty: Math.min(qty, p.qty), stock: p.qty };
+      cart.unshift(line);
+    }
+    status('Added ' + p.name, 'ok');
+    render(line.id);
+  }
+
+  function render(flashId) {
+    const body = $('cartBody');
+    body.innerHTML = cart.map((l) =>
+      '<tr data-id="' + l.id + '"' + (l.id === flashId ? ' class="flash-row"' : '') + '>' +
+        '<td><div class="cell-title">' + SI.escape(l.name) + '</div><div class="cell-sub mono">' + SI.escape(l.sku || '') + ' · ' + l.stock + ' in stock</div></td>' +
+        '<td class="text-right">' + SI.money(l.price) + '</td>' +
+        '<td class="text-center"><div class="stepper">' +
+          '<button type="button" data-step="-1" aria-label="Decrease">−</button>' +
+          '<input type="number" class="no-spin" value="' + l.qty + '" min="1" max="' + l.stock + '" aria-label="Quantity">' +
+          '<button type="button" data-step="1" aria-label="Increase">+</button>' +
+        '</div></td>' +
+        '<td class="text-right strong">' + SI.money(l.price * l.qty) + '</td>' +
+        '<td class="text-right"><button type="button" class="icon-btn danger" data-remove aria-label="Remove"><i class="bi bi-x-lg"></i></button></td>' +
+      '</tr>'
+    ).join('');
+    $('cartEmpty').hidden = cart.length > 0;
+    body.closest('.table-wrap').hidden = cart.length === 0;
+    $('clearCart').hidden = cart.length === 0;
+    const units = cart.reduce((s, l) => s + l.qty, 0);
+    $('cartCount').textContent = cart.length + ' item' + (cart.length === 1 ? '' : 's') + ' · ' + units + ' unit' + (units === 1 ? '' : 's');
+    totals();
+    save();
+  }
+
+  function money2(n) { return Math.round(n * 100) / 100; }
+
+  function totals() {
+    const subtotal = money2(cart.reduce((s, l) => s + l.price * l.qty, 0));
+    const discount = Math.min(Math.max(Number($('discount').value) || 0, 0), subtotal);
+    const total = money2(subtotal - discount);
+    $('subtotal').textContent = SI.money(subtotal);
+    $('grandTotal').textContent = SI.money(total);
+    $('checkout').disabled = cart.length === 0 || busy;
+
+    const paidRaw = $('paid').value;
+    const paid = Number(paidRaw);
+    const due = $('changeDue');
+    if (paidRaw !== '' && cart.length) {
+      due.hidden = false;
+      const diff = money2(paid - total);
+      due.classList.toggle('short', diff < 0);
+      $('changeLabel').textContent = diff < 0 ? 'Still due' : 'Change';
+      $('changeValue').textContent = SI.money(Math.abs(diff));
+    } else {
+      due.hidden = true;
+    }
+    // Quick cash buttons: exact, then the next round notes above the total.
+    const notes = [];
+    if (total > 0) {
+      notes.push(total);
+      [100, 500, 1000].forEach((step) => {
+        const v = Math.ceil(total / step) * step;
+        if (v > total && !notes.includes(v)) notes.push(v);
+      });
+    }
+    $('cashQuick').innerHTML = notes.slice(0, 4).map((v, i) => '<button type="button" data-cash="' + v + '">' + (i === 0 ? 'Exact ' : '') + SI.money(v, v % 1 ? 2 : 0) + '</button>').join('');
+    return { subtotal, discount, total };
+  }
+
+  // ----- Scanner: Enter on the scan box looks up the exact barcode / SKU.
+  scan.addEventListener('keydown', async (e) => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    const code = scan.value.trim();
+    if (!code) return;
+    scan.value = '';
+    const res = await SI.getJSON(URLS.lookup + '?code=' + encodeURIComponent(code));
+    if (res.ok) { add(res.product); return; }
+    // Not a code — fall back to a name search and add it if exactly one match.
+    const found = await SI.getJSON(URLS.search + '?q=' + encodeURIComponent(code));
+    if (found.results && found.results.length === 1) { add(found.results[0]); return; }
+    status('No product found for "' + code + '"' + (found.results && found.results.length ? ' — ' + found.results.length + ' partial matches, use search' : ''), 'err');
+  });
+
+  SI.combo({
+    input: search,
+    list: $('searchList'),
+    url: (q) => URLS.search + '?q=' + encodeURIComponent(q),
+    disabled: (p) => p.qty <= 0,
+    render: (p) =>
+      '<span class="thumb">' + SI.escape(p.name.slice(0, 1)) + '</span>' +
+      '<div style="min-width:0"><div class="ellipsis strong">' + SI.escape(p.name) + '</div><div class="meta mono">' + SI.escape(p.sku) + ' · ' + SI.escape(p.category) + '</div></div>' +
+      '<div class="right"><div class="strong">' + SI.money(p.price) + '</div><div class="meta">' + (p.qty > 0 ? p.qty + ' in stock' : 'Out of stock') + '</div></div>',
+    onPick: (p) => { add(p); scan.focus(); },
+  });
+
+  const quick = JSON.parse($('quickProducts').textContent || '[]');
+  $('quick') && $('quick').addEventListener('click', (e) => {
+    const b = e.target.closest('button[data-i]');
+    if (b) { add(quick[Number(b.dataset.i)]); scan.focus(); }
+  });
+
+  // ----- Cart edits
+  $('cartBody').addEventListener('click', (e) => {
+    const row = e.target.closest('tr[data-id]');
+    if (!row) return;
+    const line = cart.find((l) => l.id === Number(row.dataset.id));
+    if (e.target.closest('[data-remove]')) {
+      cart = cart.filter((l) => l !== line);
+      render();
+    } else if (e.target.closest('[data-step]')) {
+      const next = line.qty + Number(e.target.closest('[data-step]').dataset.step);
+      if (next < 1) { cart = cart.filter((l) => l !== line); }
+      else if (next > line.stock) { status('Only ' + line.stock + ' of "' + line.name + '" in stock.', 'err'); return; }
+      else { line.qty = next; }
+      render();
+    }
+  });
+  $('cartBody').addEventListener('change', (e) => {
+    if (!e.target.matches('input')) return;
+    const line = cart.find((l) => l.id === Number(e.target.closest('tr').dataset.id));
+    let qty = parseInt(e.target.value, 10);
+    if (!qty || qty < 1) qty = 1;
+    if (qty > line.stock) { qty = line.stock; status('Only ' + line.stock + ' of "' + line.name + '" in stock.', 'err'); }
+    line.qty = qty;
+    render();
+  });
+  $('clearCart').addEventListener('click', () => { cart = []; render(); scan.focus(); });
+  $('discount').addEventListener('input', totals);
+  $('paid').addEventListener('input', totals);
+  $('cashQuick').addEventListener('click', (e) => {
+    const b = e.target.closest('[data-cash]');
+    if (b) { $('paid').value = b.dataset.cash; totals(); }
+  });
+  document.querySelectorAll('input[name=payment]').forEach((r) => r.addEventListener('change', () => {
+    $('cashBox').hidden = r.value !== 'cash' && r.checked;
+    if (!$('cashBox').hidden) return;
+    $('paid').value = '';
+    totals();
+  }));
+
+  // ----- Customer
+  const cInput = $('customerInput'), cList = $('customerList');
+  function showCustomer(c) {
+    customer = c;
+    const label = c.name || c.phone;
+    $('customerChip').hidden = false;
+    $('customerPicker').hidden = true;
+    $('customerAvatar').textContent = (label || '?').slice(0, 1).toUpperCase();
+    $('customerName').textContent = label;
+    $('customerMeta').textContent = c.id
+      ? [c.name ? c.phone : '', c.orders + ' previous order' + (c.orders === 1 ? '' : 's')].filter(Boolean).join(' · ')
+      : 'New customer — saved with this sale';
+    save();
+  }
+  function clearCustomer() {
+    customer = null;
+    $('customerChip').hidden = true;
+    $('customerPicker').hidden = false;
+    cInput.value = '';
+    save();
+  }
+  async function findCustomers() {
+    const q = cInput.value.trim();
+    if (q.length < 2) { cList.hidden = true; return; }
+    const data = await SI.getJSON(URLS.customers + '?q=' + encodeURIComponent(q));
+    const results = data.results || [];
+    const isPhone = /^[+\d][\d\s-]{4,}$/.test(q);
+    cList.innerHTML = results.map((c, i) =>
+      '<div class="combo-item" data-i="' + i + '"><span class="avatar" style="width:30px;height:30px;font-size:12px">' + SI.escape((c.name || c.phone).slice(0, 1)) + '</span>' +
+      '<div><div class="strong">' + SI.escape(c.name || c.phone) + '</div><div class="meta">' + SI.escape(c.name ? c.phone : '') + '</div></div>' +
+      '<div class="right meta">' + c.orders + ' orders<br>' + SI.money(c.spent, 0) + '</div></div>'
+    ).join('') +
+      '<div class="combo-item" data-new><span class="avatar" style="width:30px;height:30px;font-size:12px"><i class="bi bi-plus"></i></span><div>Add new customer <strong>' + SI.escape(q) + '</strong><div class="meta">as ' + (isPhone ? 'phone number' : 'name') + '</div></div></div>';
+    cList.hidden = false;
+    cList.onmousedown = (e) => {
+      const item = e.target.closest('.combo-item');
+      if (!item) return;
+      e.preventDefault();
+      cList.hidden = true;
+      if (item.hasAttribute('data-new')) showCustomer(isPhone ? { phone: q, name: '' } : { name: q, phone: '' });
+      else showCustomer(results[Number(item.dataset.i)]);
+      scan.focus();
+    };
+  }
+  cInput.addEventListener('input', SI.debounce(findCustomers, 220));
+  cInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') { e.preventDefault(); findCustomers(); }
+    if (e.key === 'Escape') cList.hidden = true;
+  });
+  $('customerFind').addEventListener('click', findCustomers);
+  $('customerClear').addEventListener('click', clearCustomer);
+  document.addEventListener('click', (e) => { if (!$('customerPicker').contains(e.target)) cList.hidden = true; });
+
+  // ----- Checkout
+  async function checkout() {
+    if (!cart.length || busy) return;
+    const { total } = totals();
+    const paidRaw = $('paid').value;
+    if (paidRaw !== '' && Number(paidRaw) < total) { SI.toast('Cash received is less than the total.', 'error'); $('paid').focus(); return; }
+    busy = true;
+    const btn = $('checkout');
+    btn.disabled = true;
+    btn.innerHTML = '<i class="bi bi-hourglass-split"></i> Completing…';
+    const payment = document.querySelector('input[name=payment]:checked').value;
+    const res = await SI.postJSON(URLS.checkout, {
+      items: cart.map((l) => ({ id: l.id, qty: l.qty })),
+      customer,
+      discount: $('discount').value || 0,
+      paid: payment === 'cash' && paidRaw !== '' ? paidRaw : null,
+      payment,
+    });
+    busy = false;
+    btn.innerHTML = '<i class="bi bi-cart-check"></i> Complete sale';
+    if (!res.ok) { SI.toast(res.error || 'Could not complete the sale.', 'error'); totals(); return; }
+
+    $('doneTotal').textContent = SI.money(res.total);
+    $('doneMeta').textContent = 'Receipt #' + res.order + (Number(res.change) > 0 ? ' · Change ' + SI.money(res.change) : '');
+    $('doneReceipt').href = res.receipt_url + '?new=1';
+    $('doneModal').hidden = false;
+    $('doneNew').focus();
+    cart = [];
+    $('discount').value = '';
+    $('paid').value = '';
+    clearCustomer();
+    render();
+  }
+  $('checkout').addEventListener('click', checkout);
+  function newSale() { $('doneModal').hidden = true; status('Ready to scan'); scan.focus(); }
+  $('doneNew').addEventListener('click', newSale);
+
+  document.addEventListener('keydown', (e) => {
+    if (!$('doneModal').hidden) {
+      if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); newSale(); }
+      return;
+    }
+    if (e.key === 'F2') { e.preventDefault(); scan.focus(); }
+    else if (e.key === 'F3') { e.preventDefault(); search.focus(); }
+    else if (e.key === 'F4') { e.preventDefault(); if (customer) clearCustomer(); cInput.focus(); }
+    else if (e.key === 'F9') { e.preventDefault(); checkout(); }
+  });
+
+  restore();
+  if (customer) showCustomer(customer);
+  const preload = JSON.parse($('preload').textContent);
+  if (preload && !cart.some((l) => l.id === preload.id)) add(preload);
+  render();
+})();
+</script>
+{% endblock %}

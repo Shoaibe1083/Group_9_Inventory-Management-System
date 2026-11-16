@@ -1,0 +1,244 @@
+{% extends 'base.html' %}
+{% block title %}Settings{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Settings</h1>
+    <p>Your account, store details, team access and integrations.</p>
+  </div>
+</div>
+
+<div class="settings-grid">
+  <nav class="settings-nav" aria-label="Settings sections">
+    {% for key, label, icon, admin_only in tabs %}
+    <a href="?tab={{ key }}" class="{% if tab == key %}active{% endif %}"><i class="bi {{ icon }}"></i> {{ label }}</a>
+    {% endfor %}
+  </nav>
+
+  <div class="stack">
+  {% if tab == 'account' %}
+    <form method="post" class="card">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="account">
+      <div class="form-section">
+        <h3>Profile & sign-in email</h3>
+        <p>You can sign in with either your username or this email address.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ account_form.first_name.id_for_label }}">First name</label>
+            {{ account_form.first_name }}
+          </div>
+          <div class="form-group">
+            <label for="{{ account_form.last_name.id_for_label }}">Last name</label>
+            {{ account_form.last_name }}
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ account_form.username.id_for_label }}">Username</label>
+            {{ account_form.username }}
+            {% for e in account_form.username.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="{{ account_form.email.id_for_label }}">Email</label>
+            {{ account_form.email }}
+            {% for e in account_form.email.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span class="muted small">Signed in as <strong>{{ request.user.username }}</strong> · {% if request.user.is_superuser %}Admin{% else %}Staff{% endif %}</span>
+        <button class="btn btn-primary"><i class="bi bi-check-lg"></i> Save profile</button>
+      </div>
+    </form>
+
+    <form method="post" class="card">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="password">
+      <div class="form-section">
+        <h3>Change password</h3>
+        <p>At least 8 characters, not too common, and not only numbers. You'll stay signed in.</p>
+        {% if password_form.non_field_errors %}<div class="form-errors">{{ password_form.non_field_errors }}</div>{% endif %}
+        <div class="form-group" style="max-width: 360px">
+          <label for="{{ password_form.old_password.id_for_label }}">Current password</label>
+          {{ password_form.old_password }}
+          {% for e in password_form.old_password.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ password_form.new_password1.id_for_label }}">New password</label>
+            {{ password_form.new_password1 }}
+            {% for e in password_form.new_password1.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+          </div>
+          <div class="form-group">
+            <label for="{{ password_form.new_password2.id_for_label }}">Confirm new password</label>
+            {{ password_form.new_password2 }}
+            {% for e in password_form.new_password2.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+          </div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span></span>
+        <button class="btn btn-primary"><i class="bi bi-shield-lock"></i> Update password</button>
+      </div>
+    </form>
+
+  {% elif tab == 'appearance' %}
+    <div class="card">
+      <div class="form-section">
+        <h3>Theme</h3>
+        <p>Pick a colour scheme. It's saved for this browser and applies instantly.</p>
+        <div class="theme-cards">
+          {% for key, name, desc, c in themes %}
+          <button type="button" class="theme-card {% if key == theme %}selected{% endif %}" data-set-theme="{{ key }}">
+            <div class="preview" style="background:{{ c.1 }}">
+              <div class="side" style="background:{{ c.0 }}">
+                <i style="background:{{ c.3 }}"></i><i style="background:{% if key == 'sage' %}#cfcdc4{% else %}rgba(255,255,255,.35){% endif %}"></i><i style="background:{% if key == 'sage' %}#cfcdc4{% else %}rgba(255,255,255,.35){% endif %}"></i>
+              </div>
+              <div class="body">
+                <div class="bar" style="background:{% if key == 'midnight' %}#2B3A5E{% else %}#CFD6E2{% endif %}"></div>
+                <div class="tiles"><i style="background:{{ c.2 }}"></i><i style="background:{{ c.2 }}"></i><i style="background:{{ c.2 }}"></i></div>
+                <div class="btn-dot" style="background:{{ c.3 }}"></div>
+              </div>
+            </div>
+            <div class="name">{{ name }} <i class="bi bi-check-circle-fill"></i></div>
+            <div class="desc">{{ desc }}</div>
+          </button>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="card-foot"><span class="small muted">Tip: switch quickly from the <i class="bi bi-palette"></i> button in the top bar.</span></div>
+    </div>
+
+  {% elif tab == 'store' %}
+    <form method="post" class="card">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="store">
+      <div class="form-section">
+        <h3>Store details</h3>
+        <p>Shown in the sidebar and printed on receipts.</p>
+        <div class="form-group">
+          <label for="{{ store_form.shop_name.id_for_label }}">Shop name</label>
+          {{ store_form.shop_name }}
+          {% for e in store_form.shop_name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ store_form.phone.id_for_label }}">Phone</label>
+            {{ store_form.phone }}
+          </div>
+          <div class="form-group">
+            <label for="{{ store_form.address.id_for_label }}">Address</label>
+            {{ store_form.address }}
+          </div>
+        </div>
+        <div class="form-group">
+          <label for="{{ store_form.receipt_footer.id_for_label }}">Receipt footer</label>
+          {{ store_form.receipt_footer }}
+        </div>
+      </div>
+      <div class="form-section">
+        <h3>Inventory rules</h3>
+        <p>Defaults used for alerts and reorder suggestions.</p>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ store_form.default_low_stock.id_for_label }}">Default low-stock alert</label>
+            {{ store_form.default_low_stock }}
+            <div class="help">Pre-filled for new products. Each product can override it.</div>
+          </div>
+          <div class="form-group">
+            <label for="{{ store_form.reorder_cover_days.id_for_label }}">Reorder cover (days)</label>
+            {{ store_form.reorder_cover_days }}
+            {% for e in store_form.reorder_cover_days.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+            <div class="help">Reports suggest ordering enough to last this many days.</div>
+          </div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span></span>
+        <button class="btn btn-primary"><i class="bi bi-check-lg"></i> Save store settings</button>
+      </div>
+    </form>
+
+  {% elif tab == 'users' %}
+    <div class="card">
+      <div class="card-head">
+        <div>
+          <div class="card-title">Admins & staff</div>
+          <div class="card-sub">Admins can change settings and manage accounts. Staff can sell, receive stock and view reports.</div>
+        </div>
+        <a href="{% url 'settings_user_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-person-plus"></i> Add account</a>
+      </div>
+      <div class="table-wrap mt-1">
+        <table class="table hover">
+          <thead><tr><th>Account</th><th>Email</th><th>Role</th><th>Last sign-in</th><th></th></tr></thead>
+          <tbody>
+            {% for u in users %}
+            <tr>
+              <td>
+                <div class="cell-with-thumb">
+                  <span class="avatar">{{ u.get_full_name|default:u.username|slice:":1" }}</span>
+                  <div>
+                    <div class="cell-title">{{ u.get_full_name|default:u.username }}{% if u.pk == request.user.pk %} <span class="badge badge-neutral">You</span>{% endif %}</div>
+                    <div class="cell-sub">@{{ u.username }}</div>
+                  </div>
+                </div>
+              </td>
+              <td>{{ u.email|default:"—" }}</td>
+              <td>
+                {% if not u.is_active %}<span class="badge badge-neutral">Disabled</span>
+                {% elif u.is_superuser %}<span class="badge badge-ok"><i class="bi bi-shield-check"></i> Admin</span>
+                {% else %}<span class="badge badge-info">Staff</span>{% endif %}
+              </td>
+              <td class="text-2">{% if u.last_login %}{{ u.last_login|date:"j M Y, g:i A" }}{% else %}Never{% endif %}</td>
+              <td class="cell-actions">
+                <a href="{% url 'settings_user_edit' u.pk %}" class="icon-btn" title="Edit / reset password" aria-label="Edit {{ u.username }}"><i class="bi bi-pencil"></i></a>
+                {% if u.pk != request.user.pk %}<a href="{% url 'settings_user_delete' u.pk %}" class="icon-btn danger" title="Delete" aria-label="Delete {{ u.username }}"><i class="bi bi-trash3"></i></a>{% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  {% elif tab == 'telegram' %}
+    <form method="post" class="card">
+      {% csrf_token %}
+      <input type="hidden" name="action" value="telegram">
+      <div class="form-section">
+        <h3><i class="bi bi-telegram" style="color:#2AABEE"></i> Telegram reports</h3>
+        <p>Send the sales summary, top products and low-stock list to a Telegram chat with one click from Reports.</p>
+        <div class="notice info mb-2">
+          <i class="bi bi-info-circle-fill"></i>
+          <div>
+            1. In Telegram, message <strong>@BotFather</strong>, send <code>/newbot</code> and copy the bot token.<br>
+            2. Start a chat with your new bot (or add it to a group) and send any message.<br>
+            3. Open <code>https://api.telegram.org/bot&lt;token&gt;/getUpdates</code> in a browser and copy the <code>chat.id</code>.
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label for="{{ telegram_form.telegram_bot_token.id_for_label }}">{{ telegram_form.telegram_bot_token.label }}</label>
+            {{ telegram_form.telegram_bot_token }}
+          </div>
+          <div class="form-group">
+            <label for="{{ telegram_form.telegram_chat_id.id_for_label }}">{{ telegram_form.telegram_chat_id.label }}</label>
+            {{ telegram_form.telegram_chat_id }}
+          </div>
+        </div>
+      </div>
+      <div class="card-foot">
+        <span class="small">{% if store.telegram_ready %}<span class="badge badge-ok"><i class="bi bi-check-circle-fill"></i> Connected</span>{% else %}<span class="badge badge-neutral">Not set up</span>{% endif %}</span>
+        <div class="row">
+          {% if store.telegram_ready %}<button class="btn btn-outline" form="telegramTest"><i class="bi bi-send"></i> Send test</button>{% endif %}
+          <button class="btn btn-primary"><i class="bi bi-check-lg"></i> Save</button>
+        </div>
+      </div>
+    </form>
+    <form method="post" action="{% url 'settings_telegram_test' %}" id="telegramTest">{% csrf_token %}</form>
+  {% endif %}
+  </div>
+</div>
+{% endblock %}

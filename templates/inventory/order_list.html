@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Sales{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Sales</h1>
+    <p>Every completed checkout, with its receipt.</p>
+  </div>
+  <div class="actions">
+    <a href="{% url 'sales_export' %}?{{ page_qs }}" class="btn btn-outline"><i class="bi bi-download"></i> Export CSV</a>
+    <a href="{% url 'pos' %}" class="btn btn-primary"><i class="bi bi-upc-scan"></i> New sale</a>
+  </div>
+</div>
+
+<form method="get" class="toolbar">
+  <div class="seg">
+    {% for key, label in periods %}
+    <a href="?period={{ key }}{% if query %}&q={{ query|urlencode }}{% endif %}{% if payment %}&payment={{ payment }}{% endif %}" class="{% if key == period %}active{% endif %}">{{ label }}</a>
+    {% endfor %}
+  </div>
+  <input type="hidden" name="period" value="{{ period }}">
+  <div class="input-icon" style="flex: 1 1 240px; max-width: 360px">
+    <i class="bi bi-search"></i>
+    <input type="text" name="q" value="{{ query }}" class="form-control" placeholder="Receipt #, customer or product">
+  </div>
+  <select name="payment" class="form-select" style="width:auto" onchange="this.form.submit()" aria-label="Payment method">
+    <option value="">All payments</option>
+    {% for key, label in payment_choices %}<option value="{{ key }}" {% if payment == key %}selected{% endif %}>{{ label }}</option>{% endfor %}
+  </select>
+</form>
+
+<div class="grid grid-4 mb-2">
+  <div class="card kpi"><div><div class="label">Sales</div><div class="value">{{ totals.revenue|money0 }}</div></div><div class="kpi-icon tone-green"><i class="bi bi-cash-stack"></i></div></div>
+  <div class="card kpi"><div><div class="label">Profit</div><div class="value">{{ totals.profit|money0 }}</div></div><div class="kpi-icon tone-amber"><i class="bi bi-graph-up-arrow"></i></div></div>
+  <div class="card kpi"><div><div class="label">Transactions</div><div class="value">{{ totals.count|num }}</div><div class="foot">{{ totals.units|num }} units</div></div><div class="kpi-icon tone-violet"><i class="bi bi-receipt"></i></div></div>
+  <div class="card kpi"><div><div class="label">Average basket</div><div class="value">{{ totals.basket|money0 }}</div></div><div class="kpi-icon tone-blue"><i class="bi bi-basket"></i></div></div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    {% if page_obj.object_list %}
+    <table class="table hover">
+      <thead>
+        <tr>
+          <th>Receipt</th>
+          <th>Date</th>
+          <th>Customer</th>
+          <th>Payment</th>
+          <th class="text-right">Items</th>
+          <th class="text-right">Discount</th>
+          <th class="text-right">Total</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in page_obj %}
+        <tr>
+          <td><a href="{% url 'order_receipt' o.pk %}" class="cell-title mono">#{{ o.pk }}</a></td>
+          <td class="nowrap">{{ o.date|date:"j M Y" }}<div class="cell-sub">{{ o.date|time:"g:i A" }}{% if o.user %} · {{ o.user.username }}{% endif %}</div></td>
+          <td>
+            {% if o.customer %}<a href="{% url 'customer_detail' o.customer_id %}" class="strong">{{ o.customer }}</a>{% if o.customer.name and o.customer.phone %}<div class="cell-sub">{{ o.customer.phone }}</div>{% endif %}
+            {% else %}<span class="muted">Walk-in</span>{% endif %}
+          </td>
+          <td><span class="badge {% if o.payment_method == 'cash' %}badge-ok{% elif o.payment_method == 'card' %}badge-info{% else %}badge-violet{% endif %}">{{ o.get_payment_method_display }}</span></td>
+          <td class="text-right">{{ o.lines }} <span class="muted small">({{ o.units|default:0 }} units)</span></td>
+          <td class="text-right">{% if o.discount %}{{ o.discount|money }}{% else %}<span class="muted">—</span>{% endif %}</td>
+          <td class="text-right strong">{{ o.total|money }}</td>
+          <td class="cell-actions"><a href="{% url 'order_receipt' o.pk %}" class="icon-btn" title="Receipt" aria-label="Receipt #{{ o.pk }}"><i class="bi bi-printer"></i></a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-receipt empty-icon"></i>
+      <h3>No sales found</h3>
+      <p>{% if query %}Nothing matches “{{ query }}”.{% else %}No sales in this period yet.{% endif %}</p>
+      <a href="{% url 'pos' %}" class="btn btn-primary btn-sm"><i class="bi bi-upc-scan"></i> Open POS</a>
+    </div>
+    {% endif %}
+  </div>
+  {% include 'includes/pagination.html' with noun='sales' %}
+</div>
+{% endblock %}

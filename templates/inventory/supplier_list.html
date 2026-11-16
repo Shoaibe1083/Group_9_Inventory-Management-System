@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+{% load ui %}
+{% block title %}Suppliers{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Suppliers</h1>
+    <p>The people and companies you buy stock from.</p>
+  </div>
+  <div class="actions">
+    <a href="{% url 'supplier_create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Add supplier</a>
+  </div>
+</div>
+
+<div class="card">
+  <div class="table-wrap">
+    {% if suppliers %}
+    <table class="table hover">
+      <thead><tr><th>Supplier</th><th>Phone</th><th>Address</th><th class="text-right">Products</th><th class="text-right">Total purchased</th><th></th></tr></thead>
+      <tbody>
+        {% for s in suppliers %}
+        <tr>
+          <td>
+            <div class="cell-with-thumb">
+              <span class="thumb"><i class="bi bi-truck"></i></span>
+              <div><div class="cell-title">{{ s.name }}</div><div class="cell-sub">Since {{ s.created_at|date:"M Y" }}</div></div>
+            </div>
+          </td>
+          <td>{{ s.phone|default:"—" }}</td>
+          <td class="text-2">{{ s.address|default:"—" }}</td>
+          <td class="text-right">{{ s.product_count }}</td>
+          <td class="text-right strong">{{ s.purchase_total|default:0|money0 }}</td>
+          <td class="cell-actions">
+            <a href="{% url 'stock' %}?tab=in" class="icon-btn" title="Receive stock" aria-label="Receive stock"><i class="bi bi-box-arrow-in-down"></i></a>
+            <a href="{% url 'supplier_update' s.pk %}" class="icon-btn" title="Edit" aria-label="Edit"><i class="bi bi-pencil"></i></a>
+            <a href="{% url 'supplier_delete' s.pk %}" class="icon-btn danger" title="Delete" aria-label="Delete"><i class="bi bi-trash3"></i></a>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% else %}
+    <div class="empty">
+      <i class="bi bi-truck empty-icon"></i>
+      <h3>No suppliers yet</h3>
+      <p>Add the people you buy from, then pick them during Stock In.</p>
+      <a href="{% url 'supplier_create' %}" class="btn btn-primary btn-sm"><i class="bi bi-plus-lg"></i> Add supplier</a>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

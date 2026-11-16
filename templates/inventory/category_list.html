@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Categories{% endblock %}
+
+{% block content %}
+<div class="page-head">
+  <div>
+    <h1>Categories</h1>
+    <p>Group products so they're easier to find and report on.</p>
+  </div>
+</div>
+
+<div class="grid grid-main">
+  <div class="card">
+    <div class="table-wrap">
+      {% if categories %}
+      <table class="table hover">
+        <thead><tr><th>Category</th><th class="text-right">Products</th><th class="text-right">Units in stock</th><th>Alerts</th><th></th></tr></thead>
+        <tbody>
+          {% for c in categories %}
+          <tr>
+            <td><a href="{% url 'product_list' %}?category={{ c.pk }}" class="cell-title">{{ c.name }}</a></td>
+            <td class="text-right">{{ c.product_count }}</td>
+            <td class="text-right">{{ c.stock_units|default:0 }}</td>
+            <td>{% if c.low_count %}<span class="badge badge-warn">{{ c.low_count }} low</span>{% else %}<span class="muted">—</span>{% endif %}</td>
+            <td class="cell-actions">
+              <a href="{% url 'category_update' c.pk %}" class="icon-btn" title="Rename" aria-label="Rename"><i class="bi bi-pencil"></i></a>
+              <a href="{% url 'category_delete' c.pk %}" class="icon-btn danger" title="Delete" aria-label="Delete"><i class="bi bi-trash3"></i></a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty"><i class="bi bi-tags empty-icon"></i><h3>No categories yet</h3><p>Add one — for example Grocery, Toiletries or Beverages.</p></div>
+      {% endif %}
+    </div>
+  </div>
+
+  <form method="post" class="card card-body">
+    {% csrf_token %}
+    <div class="card-title" style="margin-bottom:14px">New category</div>
+    <div class="form-group">
+      <label for="{{ form.name.id_for_label }}">Name</label>
+      {{ form.name }}
+      {% for e in form.name.errors %}<div class="field-error">{{ e }}</div>{% endfor %}
+    </div>
+    <button type="submit" class="btn btn-primary btn-block"><i class="bi bi-plus-lg"></i> Add category</button>
+  </form>
+</div>
+{% endblock %}

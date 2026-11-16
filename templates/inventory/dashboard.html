@@ -1,0 +1,175 @@
+{% extends 'base.html' %}
+{% load static ui %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="hero">
+  <div>
+    <h1>{{ greeting }}, {{ request.user.first_name|default:request.user.username }}</h1>
+    <p>{{ today|date:"l, j F Y" }} · here's how {{ store.shop_name }} is doing today.</p>
+  </div>
+  <div class="actions row">
+    <a href="{% url 'stock' %}?tab=in" class="btn btn-outline"><i class="bi bi-box-seam"></i> Receive stock</a>
+    <a href="{% url 'report' %}" class="btn btn-outline"><i class="bi bi-bar-chart-line"></i> Reports</a>
+  </div>
+</div>
+
+<div class="grid grid-4">
+  <div class="card kpi">
+    <div>
+      <div class="label">Today's sales</div>
+      <div class="value">{{ kpi.revenue|money0 }}</div>
+      <div class="foot">{% delta delta.revenue %} vs yesterday</div>
+    </div>
+    <div class="kpi-icon tone-green"><i class="bi bi-cash-stack"></i></div>
+  </div>
+  <div class="card kpi">
+    <div>
+      <div class="label">Today's profit</div>
+      <div class="value">{{ kpi.profit|money0 }}</div>
+      <div class="foot">{% delta delta.profit %} · {{ kpi.margin|floatformat:1 }}% margin</div>
+    </div>
+    <div class="kpi-icon tone-amber"><i class="bi bi-graph-up-arrow"></i></div>
+  </div>
+  <div class="card kpi">
+    <div>
+      <div class="label">Transactions</div>
+      <div class="value">{{ kpi.orders }}</div>
+      <div class="foot">{% delta delta.orders %} · avg {{ kpi.basket|money0 }}</div>
+    </div>
+    <div class="kpi-icon tone-violet"><i class="bi bi-receipt"></i></div>
+  </div>
+  <a href="{% url 'alert_list' %}" class="card kpi card-link">
+    <div>
+      <div class="label">Stock alerts</div>
+      <div class="value">{{ health.low|add:health.out }}</div>
+      <div class="foot">
+        <span class="badge badge-warn">{{ health.low }} low</span>
+        <span class="badge badge-danger">{{ health.out }} out</span>
+      </div>
+    </div>
+    <div class="kpi-icon tone-red"><i class="bi bi-exclamation-triangle"></i></div>
+  </a>
+</div>
+
+<div class="grid grid-main mt-3">
+  <div class="card">
+    <div class="card-head">
+      <div>
+        <div class="card-title">Sales trend</div>
+        <div class="card-sub">Last 14 days · this month so far {{ month.revenue|money0 }} sales, {{ month.profit|money0 }} profit</div>
+      </div>
+      <div class="legend">
+        <span><i class="swatch" style="background:var(--chart-1)"></i>Sales</span>
+        <span><i class="swatch" style="background:var(--chart-2)"></i>Profit</span>
+      </div>
+    </div>
+    <div class="card-body">
+      <div class="chart-box"><canvas id="trendChart" role="img" aria-label="Sales and profit, last 14 days"></canvas></div>
+    </div>
+  </div>
+
+  <div class="card" style="overflow:hidden">
+    <div class="card-head"><div class="card-title">Quick actions</div></div>
+    <div class="quick-actions">
+      <a href="{% url 'pos' %}"><span class="kpi-icon tone-green"><i class="bi bi-upc-scan"></i></span>New sale</a>
+      <a href="{% url 'stock' %}?tab=in"><span class="kpi-icon tone-blue"><i class="bi bi-box-seam"></i></span>Receive stock</a>
+      <a href="{% url 'product_create' %}"><span class="kpi-icon tone-violet"><i class="bi bi-plus-square"></i></span>Add product</a>
+      <a href="{% url 'stock' %}?tab=adjust"><span class="kpi-icon tone-amber"><i class="bi bi-sliders"></i></span>Adjust stock</a>
+    </div>
+    <div class="health">
+      <div><div class="v">{{ health.products }}</div><div class="l">Products</div></div>
+      <div><div class="v">{{ health.units|num }}</div><div class="l">Units in stock</div></div>
+      <div><div class="v">{{ health.value|money0 }}</div><div class="l">Stock value (cost)</div></div>
+      <div><div class="v">{{ health.retail|money0 }}</div><div class="l">Retail value</div></div>
+    </div>
+  </div>
+</div>
+
+<div class="grid grid-3 mt-3">
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><i class="bi bi-exclamation-triangle"></i> Needs restocking</div>
+      <a href="{% url 'alert_list' %}" class="link">All alerts <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if low_stock %}
+    <ul class="list mt-1">
+      {% for p in low_stock %}
+      <li>
+        <div class="grow">
+          <a href="{% url 'product_detail' p.pk %}" class="title ellipsis" style="display:block">{{ p.name }}</a>
+          <div class="sub">{% if p.supplier %}{{ p.supplier.name }}{% else %}Alert at {{ p.low_stock_threshold }}{% endif %}</div>
+        </div>
+        {% if p.quantity == 0 %}<span class="badge badge-danger">Out</span>{% else %}<span class="badge badge-warn">{{ p.quantity }} left</span>{% endif %}
+        <a href="{% url 'stock_in' p.pk %}" class="icon-btn" title="Stock in" aria-label="Stock in {{ p.name }}"><i class="bi bi-plus-circle"></i></a>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty sm"><i class="bi bi-check-circle empty-icon"></i><p>Everything is well stocked.</p></div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><i class="bi bi-trophy"></i> Best sellers</div>
+      <span class="muted small">Last 30 days</span>
+    </div>
+    {% if top_products %}
+    <ul class="list mt-1">
+      {% with top_products.0.units as max_units %}
+      {% for row in top_products %}
+      <li>
+        <span class="rank">{{ forloop.counter }}</span>
+        <div class="grow">
+          <div class="row-between" style="flex-wrap:nowrap"><a href="{% url 'product_detail' row.product_id %}" class="title ellipsis">{{ row.product__name }}</a><span class="small text-2 nowrap">{{ row.units }} sold</span></div>
+          <div class="meter mt-1"><span style="width: {% widthratio row.units max_units 100 %}%"></span></div>
+        </div>
+      </li>
+      {% endfor %}
+      {% endwith %}
+    </ul>
+    {% else %}
+    <div class="empty sm"><p>No sales in the last 30 days.</p></div>
+    {% endif %}
+  </div>
+
+  <div class="card">
+    <div class="card-head">
+      <div class="card-title"><i class="bi bi-receipt"></i> Recent sales</div>
+      <a href="{% url 'order_list' %}" class="link">All sales <i class="bi bi-arrow-right"></i></a>
+    </div>
+    {% if recent_orders %}
+    <ul class="list mt-1">
+      {% for o in recent_orders %}
+      <li>
+        <div class="grow">
+          <a href="{% url 'order_receipt' o.pk %}" class="title">#{{ o.pk }} · {% if o.customer %}{{ o.customer }}{% else %}Walk-in{% endif %}</a>
+          <div class="sub">{{ o.date|date:"j M, g:i A" }} · {{ o.lines }} item{{ o.lines|pluralize }}</div>
+        </div>
+        <span class="strong">{{ o.total|money0 }}</span>
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <div class="empty sm"><p>No sales yet. <a href="{% url 'pos' %}" class="link">Open the POS</a></p></div>
+    {% endif %}
+  </div>
+</div>
+
+{{ chart|json_script:"chartData" }}
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'vendor/chartjs/chart.umd.min.js' %}"></script>
+<script src="{% static 'js/charts.js' %}"></script>
+<script>
+  (function () {
+    const d = JSON.parse(document.getElementById('chartData').textContent);
+    SIChart.line('trendChart', d.labels, [
+      { label: 'Sales', data: d.revenue, slot: 0 },
+      { label: 'Profit', data: d.profit, slot: 1 },
+    ]);
+  })();
+</script>
+{% endblock %}
