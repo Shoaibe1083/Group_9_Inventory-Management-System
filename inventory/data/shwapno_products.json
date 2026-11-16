@@ -1,0 +1,1207 @@
+{
+ "source": "https://www.shwapno.com",
+ "fetched": "2026-11-02",
+ "note": "Names and shelf prices (BDT) as listed on shwapno.com on the fetch date. Buy prices are not published there and are estimated on import.",
+ "products": [
+  {
+   "name": "ACI Pure Fortified Jeerashail Rice 5kg",
+   "category": "Rice",
+   "shwapno_sku": "2401920",
+   "price": 510,
+   "regular_price": 510,
+   "url": "https://www.shwapno.com/aci-pure-fortified-jeerashail-rice-5kg-6"
+  },
+  {
+   "name": "Mehran Kernel Basmati Rice 2kg",
+   "category": "Rice",
+   "shwapno_sku": "2400041",
+   "price": 1190,
+   "regular_price": 1190,
+   "url": "https://www.shwapno.com/mehran-kernal-gold-basmoti-rice-2kg"
+  },
+  {
+   "name": "ACI Pure Najirshail Rice 10kg",
+   "category": "Rice",
+   "shwapno_sku": "2401252",
+   "price": 960,
+   "regular_price": 980,
+   "url": "https://www.shwapno.com/aci-pure-najirshile-rice-10kg"
+  },
+  {
+   "name": "ACI Pure Miniket (Jirashail) Rice 10kg",
+   "category": "Rice",
+   "shwapno_sku": "2401465",
+   "price": 910,
+   "regular_price": 950,
+   "url": "https://www.shwapno.com/aci-pure-miniket-rice-10kg-poly"
+  },
+  {
+   "name": "ACI Pure Kataribhog Rice 5kg",
+   "category": "Rice",
+   "shwapno_sku": "2401331",
+   "price": 880,
+   "regular_price": 880,
+   "url": "https://www.shwapno.com/aci-pure-sugondhi-kataribhog-rice-5kg"
+  },
+  {
+   "name": "ACI Nutrilife Brown Rice 5kg",
+   "category": "Rice",
+   "shwapno_sku": "2401801",
+   "price": 600,
+   "regular_price": 600,
+   "url": "https://www.shwapno.com/aci-nutrilife-brown-rice-5kg"
+  },
+  {
+   "name": "ACI Pure Banglamati Rice 5kg",
+   "category": "Rice",
+   "shwapno_sku": "2401770",
+   "price": 560,
+   "regular_price": 560,
+   "url": "https://www.shwapno.com/aci-pure-deshi-basmati-rice-5kg"
+  },
+  {
+   "name": "Aroma Basmati Rice 1kg",
+   "category": "Rice",
+   "shwapno_sku": "2401531",
+   "price": 480,
+   "regular_price": 480,
+   "url": "https://www.shwapno.com/aci-aroma-pure-basmati-rice-1kg"
+  },
+  {
+   "name": "ACI Pure Miniket (Jirashail) Rice 5kg",
+   "category": "Rice",
+   "shwapno_sku": "2400477",
+   "price": 460,
+   "regular_price": 480,
+   "url": "https://www.shwapno.com/aci-pure-premium-miniket-rice-5kg"
+  },
+  {
+   "name": "ACI Pure Chinigura Rice 2kg",
+   "category": "Rice",
+   "shwapno_sku": "2401295",
+   "price": 460,
+   "regular_price": 460,
+   "url": "https://www.shwapno.com/aci-pure-chinigura-rice-2kg"
+  },
+  {
+   "name": "ACI Pure Mung Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2401362",
+   "price": 210,
+   "regular_price": 210,
+   "url": "https://www.shwapno.com/aci-pure-mung-dal-1-kg"
+  },
+  {
+   "name": "ACI Pure Moshur Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400497",
+   "price": 185,
+   "regular_price": 185,
+   "url": "https://www.shwapno.com/aci-pure-moshur-dal-1kg"
+  },
+  {
+   "name": "BPM Mashkalai Dal (Vaza) 500gm",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400891",
+   "price": 135,
+   "regular_price": 135,
+   "url": "https://www.shwapno.com/bpm-mashkalai-dal-vaza-500g"
+  },
+  {
+   "name": "Shwapno Moog Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400389",
+   "price": 205,
+   "regular_price": 205,
+   "url": "https://www.shwapno.com/shwapno-moog-dal-1kg"
+  },
+  {
+   "name": "Shwapno Red Lentil (Kangaroo) 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400387",
+   "price": 220,
+   "regular_price": 220,
+   "url": "https://www.shwapno.com/shwapno-red-lentil-kangaroo-1kg"
+  },
+  {
+   "name": "Shwapno Mixed Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400875",
+   "price": 165,
+   "regular_price": 165,
+   "url": "https://www.shwapno.com/shwapno-mixed-dal-1kg"
+  },
+  {
+   "name": "Shwapno Boot Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400884",
+   "price": 170,
+   "regular_price": 170,
+   "url": "https://www.shwapno.com/shwapno-boot-dal-1kg"
+  },
+  {
+   "name": "Pran Moshur Dal 1kg",
+   "category": "Dal & Lentils",
+   "shwapno_sku": "2400492",
+   "price": 185,
+   "regular_price": 185,
+   "url": "https://www.shwapno.com/pran-moshur-dal-1kg"
+  },
+  {
+   "name": "Rupchanda Soyabean Oil 1Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400406",
+   "price": 204,
+   "regular_price": 204,
+   "url": "https://www.shwapno.com/rupchanda-soyabean-oil-1liter"
+  },
+  {
+   "name": "Fresh Soyabean Oil 5Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400078",
+   "price": 1000,
+   "regular_price": 1000,
+   "url": "https://www.shwapno.com/fresh-soyabean-oil-5liter"
+  },
+  {
+   "name": "Pusti Soyabean Oil 5Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400372",
+   "price": 1000,
+   "regular_price": 1000,
+   "url": "https://www.shwapno.com/pusti-soyabean-oil-5liter"
+  },
+  {
+   "name": "Pusti Soyabean Oil 1Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400369",
+   "price": 204,
+   "regular_price": 204,
+   "url": "https://www.shwapno.com/pusti-soyabean-oil-1liter"
+  },
+  {
+   "name": "Star Ship Soyabean Oil 5Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2401949",
+   "price": 1000,
+   "regular_price": 1000,
+   "url": "https://www.shwapno.com/star-ship-soyabean-oil-5-ltr"
+  },
+  {
+   "name": "Star Ship Soyabean Oil 1Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2401946",
+   "price": 204,
+   "regular_price": 204,
+   "url": "https://www.shwapno.com/star-ship-soyabean-oil-1-ltr"
+  },
+  {
+   "name": "ACI Pure Mustard Oil 500ml",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400081",
+   "price": 175,
+   "regular_price": 200,
+   "url": "https://www.shwapno.com/aci-pure-mustard-oil-500ml"
+  },
+  {
+   "name": "ACI Pure Mustard Oil 200ml",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400080",
+   "price": 85,
+   "regular_price": 85,
+   "url": "https://www.shwapno.com/aci-pure-mustard-oil-200ml"
+  },
+  {
+   "name": "Pran Mustard Oil 1Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400778",
+   "price": 340,
+   "regular_price": 340,
+   "url": "https://www.shwapno.com/Pran-Mustard-Oil-1Ltr-"
+  },
+  {
+   "name": "Radhuni Mustard Oil 1Ltr.",
+   "category": "Cooking Oil",
+   "shwapno_sku": "2400004",
+   "price": 380,
+   "regular_price": 380,
+   "url": "https://www.shwapno.com/radhuni-mustard-oil-1liter"
+  },
+  {
+   "name": "Zerocal 150 Sachets (Container)",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2810155",
+   "price": 400,
+   "regular_price": 400,
+   "url": "https://www.shwapno.com/zerocal-150-sachets-container"
+  },
+  {
+   "name": "Sugar Free Gold Sugar Substitute Tablet 50gm",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2807154",
+   "price": 410,
+   "regular_price": 410,
+   "url": "https://www.shwapno.com/sugar-free-gold-sugar-substitute-tablet-50gm"
+  },
+  {
+   "name": "Sugar Free Gold Sugar Substitute Powder 100gm",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2807152",
+   "price": 250,
+   "regular_price": 250,
+   "url": "https://www.shwapno.com/sugar-free-gold-sugar-substitute-powder-100gm"
+  },
+  {
+   "name": "Zerocal Sachets 75Pcs (Box)",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2805034",
+   "price": 250,
+   "regular_price": 250,
+   "url": "https://www.shwapno.com/zerocal-sachets-75pcs-box"
+  },
+  {
+   "name": "Shwapno Pink Salt 200gm (Jar)",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2703827",
+   "price": 130,
+   "regular_price": 130,
+   "url": "https://www.shwapno.com/shwapno-pink-salt-200gm-jar-2"
+  },
+  {
+   "name": "Shwapno Bit Salt 100gm",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2703547",
+   "price": 41,
+   "regular_price": 41,
+   "url": "https://www.shwapno.com/shwapno-bit-salt-100gm-2"
+  },
+  {
+   "name": "Ajinomoto Tasting Salt 200gm",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2701790",
+   "price": 95,
+   "regular_price": 95,
+   "url": "https://www.shwapno.com/ajinomoto-tasting-salt-200gm-2"
+  },
+  {
+   "name": "Haiko Tasting Salt 100gm",
+   "category": "Salt & Sugar",
+   "shwapno_sku": "2700295",
+   "price": 70,
+   "regular_price": 70,
+   "url": "https://www.shwapno.com/haiko-tasting-salt-100gm"
+  },
+  {
+   "name": "Foster Clark's Corn Flour 400gm (Tin)",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2700073",
+   "price": 430,
+   "regular_price": 430,
+   "url": "https://www.shwapno.com/foster-clarks-corn-flour400gm-tin"
+  },
+  {
+   "name": "Foster Clark's Corn Flour 400gm (Packet)",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2700072",
+   "price": 360,
+   "regular_price": 360,
+   "url": "https://www.shwapno.com/foster-clarks-corn-flour-400gm-packet"
+  },
+  {
+   "name": "Foster Clark's Corn Flour 200gm (Packet)",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2700074",
+   "price": 200,
+   "regular_price": 200,
+   "url": "https://www.shwapno.com/foster-clarks-corn-flour-200gm-packet"
+  },
+  {
+   "name": "Uncle Barns' Tempura Flour 500gm",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2700476",
+   "price": 275,
+   "regular_price": 275,
+   "url": "https://www.shwapno.com/uncle-barns-tempura-flour-500gm-2"
+  },
+  {
+   "name": "ACI Pure Maida 2kg",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2400517",
+   "price": 180,
+   "regular_price": 180,
+   "url": "https://www.shwapno.com/aci-pure-maida-2kg"
+  },
+  {
+   "name": "ACI Nutrilife Brown Atta 2kg",
+   "category": "Atta & Flour",
+   "shwapno_sku": "2401330",
+   "price": 150,
+   "regular_price": 150,
+   "url": "https://www.shwapno.com/aci-brown-atta-2kg"
+  },
+  {
+   "name": "ACI Pure Coriander (Dhonia) Powder 100gm",
+   "category": "Spices",
+   "shwapno_sku": "2700096",
+   "price": 60,
+   "regular_price": 60,
+   "url": "https://www.shwapno.com/aci-pure-coriander-dhonia-powder-100gm"
+  },
+  {
+   "name": "ACI Pure Coriander (Dhonia) Powder 200gm",
+   "category": "Spices",
+   "shwapno_sku": "2700097",
+   "price": 110,
+   "regular_price": 110,
+   "url": "https://www.shwapno.com/aci-pure-coriander-dhonia-powder-200gm"
+  },
+  {
+   "name": "Radhuni Coriander (Dhonia) Powder 50gm",
+   "category": "Spices",
+   "shwapno_sku": "2700101",
+   "price": 32,
+   "regular_price": 32,
+   "url": "https://www.shwapno.com/radhuni-coriander-dhonia-powder-50-gm"
+  },
+  {
+   "name": "Radhuni Coriander (Dhonia) Powder 100gm",
+   "category": "Spices",
+   "shwapno_sku": "2700102",
+   "price": 60,
+   "regular_price": 60,
+   "url": "https://www.shwapno.com/radhuni-coriander-dhonia-powder-100g"
+  },
+  {
+   "name": "Radhuni Coriander (Dhonia) Powder 200gm",
+   "category": "Spices",
+   "shwapno_sku": "2700103",
+   "price": 110,
+   "regular_price": 110,
+   "url": "https://www.shwapno.com/radhuni-coriander-dhonia-powder-200gm"
+  },
+  {
+   "name": "Radhuni Coriander (Dhonia) Powder 500gm",
+   "category": "Spices",
+   "shwapno_sku": "2700104",
+   "price": 240,
+   "regular_price": 240,
+   "url": "https://www.shwapno.com/radhuni-coriander-dhonia-powder-500g"
+  },
+  {
+   "name": "Radhuni Garam Masala Powder 15gm",
+   "category": "Spices",
+   "shwapno_sku": "2700108",
+   "price": 40,
+   "regular_price": 40,
+   "url": "https://www.shwapno.com/radhuni-garam-masala-powder-15gm"
+  },
+  {
+   "name": "Radhuni Garam Masala Powder 40gm",
+   "category": "Spices",
+   "shwapno_sku": "2700109",
+   "price": 95,
+   "regular_price": 95,
+   "url": "https://www.shwapno.com/radhuni-garam-masala-powder-40gm"
+  },
+  {
+   "name": "Haiko Oregano Fizza 10gm",
+   "category": "Spices",
+   "shwapno_sku": "2700705",
+   "price": 85,
+   "regular_price": 85,
+   "url": "https://www.shwapno.com/haiko-oregano-fizza-10gm-2"
+  },
+  {
+   "name": "Haiko Paprika 20gm",
+   "category": "Spices",
+   "shwapno_sku": "2700706",
+   "price": 85,
+   "regular_price": 85,
+   "url": "https://www.shwapno.com/haiko-paprika-20gm-2"
+  },
+  {
+   "name": "Haiko White Pepper 30gm (Pet)",
+   "category": "Spices",
+   "shwapno_sku": "2701009",
+   "price": 180,
+   "regular_price": 180,
+   "url": "https://www.shwapno.com/haiko-white-pepper-30gm-pet-2"
+  },
+  {
+   "name": "Haiko Black Pepper 30gm (Pet)",
+   "category": "Spices",
+   "shwapno_sku": "2701010",
+   "price": 150,
+   "regular_price": 150,
+   "url": "https://www.shwapno.com/haiko-black-pepper-30gm-pet-2"
+  },
+  {
+   "name": "MI ABC Fried Instant Noodle Goreng 5X70gm Indonesia",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2818943",
+   "price": 350,
+   "regular_price": 350,
+   "url": "https://www.shwapno.com/mi-abc-instant-noodles-chicken-5pack-70gmx5-350gm"
+  },
+  {
+   "name": "MI ABC Selera Spicy Beef Noodle 4X80gm Indonesia",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2818944",
+   "price": 350,
+   "regular_price": 350,
+   "url": "https://www.shwapno.com/mi-abc-instant-beef-4-pack-80gmx4-320gm"
+  },
+  {
+   "name": "MI ABC Instant Goreng Chicken Noodle 70gm Indonesia (Buy2 Get1 Free)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2819256",
+   "price": 160,
+   "regular_price": 160,
+   "url": "https://www.shwapno.com/mi-abc-instant-goreng-chicken-noodles-70gm-buy2-get1-free-indonesia"
+  },
+  {
+   "name": "MI ABC Selera Pedas Instant Cup Noodle 60gm Indonesia",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2818945",
+   "price": 155,
+   "regular_price": 155,
+   "url": "https://www.shwapno.com/mi-abc-selera-pedas-rosai-gula-chicken-cup-60gm"
+  },
+  {
+   "name": "Prosperity Carrot Noodles 454gm",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2802763",
+   "price": 425,
+   "regular_price": 425,
+   "url": "https://www.shwapno.com/prosperity-carrot-noodles-454gm"
+  },
+  {
+   "name": "Maggi 2 Minute Noodles Masala Family Fun Pack 992gm (16Pcs Pack)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2814555",
+   "price": 360,
+   "regular_price": 360,
+   "url": "https://www.shwapno.com/maggi-masala-family-fun-pack-992gm"
+  },
+  {
+   "name": "Maggi 2 Minute Noodles Masala 744gm (12Pcs Pack)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2805082",
+   "price": 275,
+   "regular_price": 275,
+   "url": "https://www.shwapno.com/maggi-2-minute-noodles-masala-744gm"
+  },
+  {
+   "name": "Maggi 2 Minute Noodles Masala 496(±)124gm (8Pcs Pack)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2801885",
+   "price": 190,
+   "regular_price": 190,
+   "url": "https://www.shwapno.com/maggi-2-minute-masala-noodles-620124gm"
+  },
+  {
+   "name": "Santa Sophia La Pasta PENNE RIGATE 500gm",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2802867",
+   "price": 450,
+   "regular_price": 450,
+   "url": "https://www.shwapno.com/santa-sophia-la-pasta-penne-rigate-500-gm"
+  },
+  {
+   "name": "Dekko Pasta 200gm (Buy2 Get1 Free)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2815013",
+   "price": 120,
+   "regular_price": 120,
+   "url": "https://www.shwapno.com/dekko-pasta-200gm-buy2-get1-free"
+  },
+  {
+   "name": "Dekko Pasta 200gm",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2814912",
+   "price": 60,
+   "regular_price": 60,
+   "url": "https://www.shwapno.com/dekko-pasta-200gm"
+  },
+  {
+   "name": "Verda Spegetti 400gm (Buy1 Get1 Free)",
+   "category": "Noodles & Pasta",
+   "shwapno_sku": "2814228",
+   "price": 350,
+   "regular_price": 350,
+   "url": "https://www.shwapno.com/verda-spegetti-400-gm-buy1-get1-free"
+  },
+  {
+   "name": "IKO Assorted Calcium Crackers 700gm (Tin)",
+   "category": "Biscuits",
+   "shwapno_sku": "2801142",
+   "price": 1950,
+   "regular_price": 1950,
+   "url": "https://www.shwapno.com/iko-assorted-calcium-cracker-700gm-tin"
+  },
+  {
+   "name": "IKO High Fibre Daily 700gm (Tin)",
+   "category": "Biscuits",
+   "shwapno_sku": "2801143",
+   "price": 1950,
+   "regular_price": 1950,
+   "url": "https://www.shwapno.com/iko-high-fibre-daily-700gm-tin"
+  },
+  {
+   "name": "IKO Muesli Oat Crackers 178gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2803885",
+   "price": 595,
+   "regular_price": 595,
+   "url": "https://www.shwapno.com/iko-muesli-oat-cracker-178g"
+  },
+  {
+   "name": "IKO Oat Plus Crackers 178gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2803886",
+   "price": 595,
+   "regular_price": 595,
+   "url": "https://www.shwapno.com/iko-oat-plus-cracker-178g"
+  },
+  {
+   "name": "Julie's Cheese Crackers 600(±)20gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2800908",
+   "price": 1350,
+   "regular_price": 1350,
+   "url": "https://www.shwapno.com/julies-cheese-crackers-60020g"
+  },
+  {
+   "name": "Julie's Sugar Crackers Biscuit 260gm Malaysia",
+   "category": "Biscuits",
+   "shwapno_sku": "2818407",
+   "price": 560,
+   "regular_price": 560,
+   "url": "https://www.shwapno.com/julies-sugar-crackers-biscuit-260g-my-2"
+  },
+  {
+   "name": "HUP SENG Cream Crackers 225gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2805128",
+   "price": 640,
+   "regular_price": 640,
+   "url": "https://www.shwapno.com/hup-seng-cream-crackers-225gm"
+  },
+  {
+   "name": "HUP Seng Cream Crackers 125gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2804183",
+   "price": 350,
+   "regular_price": 350,
+   "url": "https://www.shwapno.com/hup-seng-cream-crackers-125gm-2"
+  },
+  {
+   "name": "Tiffany Delight Bourbon Cream Biscuits 200gm",
+   "category": "Biscuits",
+   "shwapno_sku": "2806586",
+   "price": 645,
+   "regular_price": 645,
+   "url": "https://www.shwapno.com/tiffany-delight-bourbon-cream-biscuits-200gm"
+  },
+  {
+   "name": "Cadbury Oreo Choco Sandwich Biscuits 38.75(±)3gm India",
+   "category": "Biscuits",
+   "shwapno_sku": "2804126",
+   "price": 55,
+   "regular_price": 55,
+   "url": "https://www.shwapno.com/cadbury-oreo-chocolatey-sandwich-biscuits-506-25gm"
+  },
+  {
+   "name": "Pringles Sour Cream & Onion Chips 134gm (Malaysia)",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2816906",
+   "price": 370,
+   "regular_price": 370,
+   "url": "https://www.shwapno.com/pringles-sour-cream-and-onion-chips-134gm-malaysia"
+  },
+  {
+   "name": "Pringles Original Chips 134gm (Malaysia)",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2816907",
+   "price": 370,
+   "regular_price": 370,
+   "url": "https://www.shwapno.com/pringles-original-chips-134gm-malaysia"
+  },
+  {
+   "name": "Pringles Original Chips 42gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2813731",
+   "price": 160,
+   "regular_price": 160,
+   "url": "https://www.shwapno.com/pringles-original-chips-42gm"
+  },
+  {
+   "name": "Pringles Sour Cream & Onion Chips 42gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2813732",
+   "price": 160,
+   "regular_price": 160,
+   "url": "https://www.shwapno.com/pringles-sour-cream-and-onion-chips-42gm"
+  },
+  {
+   "name": "Mister Potato Chips Original 100gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2800328",
+   "price": 310,
+   "regular_price": 310,
+   "url": "https://www.shwapno.com/mister-potato-original-chips-100gm"
+  },
+  {
+   "name": "Bombay Sweets Chanachur 500(±)50gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2807915",
+   "price": 150,
+   "regular_price": 150,
+   "url": "https://www.shwapno.com/bombay-sweets-chanachur-50050gm"
+  },
+  {
+   "name": "Bombay Sweets Chanachur 300gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2800619",
+   "price": 100,
+   "regular_price": 100,
+   "url": "https://www.shwapno.com/bombay-sweets-chanachur-35050gm-2"
+  },
+  {
+   "name": "Bombay Sweets Dalmoth Chanachur 300gm",
+   "category": "Chips & Snacks",
+   "shwapno_sku": "2818655",
+   "price": 115,
+   "regular_price": 115,
+   "url": "https://www.shwapno.com/bombay-sweets-dalmoth-300g"
+  },
+  {
+   "name": "Kazi & Kazi Black Tea 80gm (40 Tea Bags)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2300305",
+   "price": 130,
+   "regular_price": 130,
+   "url": "https://www.shwapno.com/kazi-and-kazi-black-tea-bag-40-bags-80-gm"
+  },
+  {
+   "name": "Kazi & Kazi Black Tea 200gm (Packet)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2300307",
+   "price": 140,
+   "regular_price": 140,
+   "url": "https://www.shwapno.com/kazi-and-kazi-black-tea-packet-200-gm"
+  },
+  {
+   "name": "Halda Valley Golden Eyebrow Black Tea 100gm",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2303742",
+   "price": 1445,
+   "regular_price": 1445,
+   "url": "https://www.shwapno.com/halda-valley-golden-eyebrow-black-tea-100gm"
+  },
+  {
+   "name": "Dilmah Black Teabag Ginger Honey Flavour 40(±)10gm",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2300855",
+   "price": 665,
+   "regular_price": 665,
+   "url": "https://www.shwapno.com/dilmah-black-teabag-ginger-honey-flavour-30-gm"
+  },
+  {
+   "name": "Kazi & Kazi Loose Black Tea Orthodox 100gm",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2301015",
+   "price": 215,
+   "regular_price": 215,
+   "url": "https://www.shwapno.com/kazi-kazi-loose-black-tea-orthodox-100-gm-2"
+  },
+  {
+   "name": "Moccona Select Instant Coffee 45gm (Jar)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2303787",
+   "price": 450,
+   "regular_price": 450,
+   "url": "https://www.shwapno.com/moccona-select-instant-coffee-45g-jar"
+  },
+  {
+   "name": "Nestle Coffee Mate 400gm (Jar)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2500010",
+   "price": 400,
+   "regular_price": 400,
+   "url": "https://www.shwapno.com/nestle-coffee-mate-jar-400gm"
+  },
+  {
+   "name": "Nestle Coffee Mate 450gm (BIB)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2500011",
+   "price": 380,
+   "regular_price": 380,
+   "url": "https://www.shwapno.com/nestle-coffee-mate-450gm-bib"
+  },
+  {
+   "name": "Nescafé Classic 200(±)20gm (Jar)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2300068",
+   "price": 970,
+   "regular_price": 970,
+   "url": "https://www.shwapno.com/nescafe-classic-200g-jar"
+  },
+  {
+   "name": "Nescafé Classic coffee 50gm (Glass Bottle)",
+   "category": "Tea & Coffee",
+   "shwapno_sku": "2300069",
+   "price": 275,
+   "regular_price": 275,
+   "url": "https://www.shwapno.com/nescafe-classic-coffee-50gm-glass-bottle"
+  },
+  {
+   "name": "Vita Pomegranate Juice 025L. (Moldova)",
+   "category": "Beverages",
+   "shwapno_sku": "2304225",
+   "price": 265,
+   "regular_price": 265,
+   "url": "https://www.shwapno.com/vita-pomegrante-juice-025-l-md"
+  },
+  {
+   "name": "Fontana Apple Juice 1Ltr.",
+   "category": "Beverages",
+   "shwapno_sku": "2300374",
+   "price": 590,
+   "regular_price": 590,
+   "url": "https://www.shwapno.com/fontana-apple-juice-1-litre"
+  },
+  {
+   "name": "Cyprina Apple Juice 1Ltr. (Slim)",
+   "category": "Beverages",
+   "shwapno_sku": "2301350",
+   "price": 625,
+   "regular_price": 625,
+   "url": "https://www.shwapno.com/cyprina-apple-juice-1-ltr-slim"
+  },
+  {
+   "name": "Nutrilife Cranberry Fruit Magic Juice 1Ltr.",
+   "category": "Beverages",
+   "shwapno_sku": "2303747",
+   "price": 360,
+   "regular_price": 410,
+   "url": "https://www.shwapno.com/nutrilife-cranberry-fruit-m-juice-1-liter"
+  },
+  {
+   "name": "Nutrilife Pomegranate Beverage 1Ltr.",
+   "category": "Beverages",
+   "shwapno_sku": "2303529",
+   "price": 345,
+   "regular_price": 395,
+   "url": "https://www.shwapno.com/nutrilife-pomegranate-beverage-1-liter"
+  },
+  {
+   "name": "Nutrilife Mango Beverage 1Ltr.",
+   "category": "Beverages",
+   "shwapno_sku": "2303528",
+   "price": 245,
+   "regular_price": 295,
+   "url": "https://www.shwapno.com/nutrilife-mango-beverage-1-liter"
+  },
+  {
+   "name": "Schweppes Soda Water 330(±)10ml (Can)",
+   "category": "Beverages",
+   "shwapno_sku": "2300879",
+   "price": 300,
+   "regular_price": 300,
+   "url": "https://www.shwapno.com/schweppes-soda-water-can-330-10-ml"
+  },
+  {
+   "name": "Schweppes Tonic Water 330(±)10ml (Can)",
+   "category": "Beverages",
+   "shwapno_sku": "2300880",
+   "price": 300,
+   "regular_price": 300,
+   "url": "https://www.shwapno.com/schweppes-tonic-water-can-330-10-ml"
+  },
+  {
+   "name": "Coca Cola 1000ml (Pet)",
+   "category": "Beverages",
+   "shwapno_sku": "2300250",
+   "price": 90,
+   "regular_price": 90,
+   "url": "https://www.shwapno.com/coca-cola-pet-1000ml"
+  },
+  {
+   "name": "Coca Cola Drink 400ml",
+   "category": "Beverages",
+   "shwapno_sku": "2303284",
+   "price": 40,
+   "regular_price": 40,
+   "url": "https://www.shwapno.com/coca-cola-drink-400ml"
+  },
+  {
+   "name": "Coca Cola 250ml (Go Pack)",
+   "category": "Beverages",
+   "shwapno_sku": "2303216",
+   "price": 25,
+   "regular_price": 25,
+   "url": "https://www.shwapno.com/coca-cola-250ml-go-pack"
+  },
+  {
+   "name": "Coca Cola Zero 250ml (Pet)",
+   "category": "Beverages",
+   "shwapno_sku": "2303370",
+   "price": 20,
+   "regular_price": 20,
+   "url": "https://www.shwapno.com/coca-cola-zero-pet-250ml"
+  },
+  {
+   "name": "Nestlé Nido Forti Grow Full Cream Milk Powder 1kg (Tin)",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2200716",
+   "price": 1500,
+   "regular_price": 1500,
+   "url": "https://www.shwapno.com/nestle-nido-forti-grow-m-powder-tin-1kg"
+  },
+  {
+   "name": "AURA Milk Pusti Powder 1Kg",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2501667",
+   "price": 715,
+   "regular_price": 765,
+   "url": "https://www.shwapno.com/marks-fcmp-500g-buy-1-seylontea-400g-get-bowl-free"
+  },
+  {
+   "name": "MARKS Young Star Full Cream Milk Powder 400gm",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500772",
+   "price": 425,
+   "regular_price": 425,
+   "url": "https://www.shwapno.com/marks-young-star-full-cream-milk-powder-400gm"
+  },
+  {
+   "name": "Dano Power Full Cream Milk Powder 1kg (BIB)",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500909",
+   "price": 980,
+   "regular_price": 980,
+   "url": "https://www.shwapno.com/dano-power-full-cream-milk-powder-1-kg-bib"
+  },
+  {
+   "name": "Dano Power Full Cream Milk Powder 500gm",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500073",
+   "price": 460,
+   "regular_price": 480,
+   "url": "https://www.shwapno.com/dano-power-full-cream-milk-powder-500gm"
+  },
+  {
+   "name": "Dano Power Full Cream Milk Powder 200gm",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500582",
+   "price": 205,
+   "regular_price": 205,
+   "url": "https://www.shwapno.com/dano-power-full-cream-milk-powder-200gm"
+  },
+  {
+   "name": "Pran Premium Butter 200gm",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500835",
+   "price": 285,
+   "regular_price": 285,
+   "url": "https://www.shwapno.com/pran-premium-butter-200gm"
+  },
+  {
+   "name": "Pran Premium Butter 100gm",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2500834",
+   "price": 160,
+   "regular_price": 160,
+   "url": "https://www.shwapno.com/pran-premium-butter-100gm"
+  },
+  {
+   "name": "Farm Fresh Premium Butter 50gmX4Pcs (Box)",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "2501103",
+   "price": 295,
+   "regular_price": 295,
+   "url": "https://www.shwapno.com/farm-fresh-premium-butter-50gx4pcs-box"
+  },
+  {
+   "name": "Egg Loose",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "3102046",
+   "price": 11.5,
+   "regular_price": 11.5,
+   "url": "https://www.shwapno.com/egg-loose"
+  },
+  {
+   "name": "Purnava Omega 3 enriched Egg (12Pcs Pack)",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "3100878",
+   "price": 280,
+   "regular_price": 280,
+   "url": "https://www.shwapno.com/purnava-omega-3-enriched-egg-12-pcs-pack-2"
+  },
+  {
+   "name": "Purnava Vitamin-E Enriched Egg (12Pcs Pack)",
+   "category": "Dairy & Eggs",
+   "shwapno_sku": "3101554",
+   "price": 220,
+   "regular_price": 220,
+   "url": "https://www.shwapno.com/purnava-vitamin-e-enriched-egg-12-pcs-pack-2"
+  },
+  {
+   "name": "Select Plus Ketoconazole Shampoo 75ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3000031",
+   "price": 210,
+   "regular_price": 210,
+   "url": "https://www.shwapno.com/select-plus-ketoconazole-shampoo-75ml"
+  },
+  {
+   "name": "Himalaya Anti Hair Fall Shampoo 180ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3003705",
+   "price": 270,
+   "regular_price": 270,
+   "url": "https://www.shwapno.com/himalaya-anti-hair-fall-shampoo-180ml-2"
+  },
+  {
+   "name": "Clear Anti Dandruff Complete Active Care Shampoo 180(±)10ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3004544",
+   "price": 240,
+   "regular_price": 240,
+   "url": "https://www.shwapno.com/clear-anti-dandruff-complete-active-care-shampoo-18010ml-2"
+  },
+  {
+   "name": "Sunsilk Smooth & Manageble Shampoo 320(±)20ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3004798",
+   "price": 725,
+   "regular_price": 725,
+   "url": "https://www.shwapno.com/sunsilk-smooth-and-manageble-shampoo-32020ml-2"
+  },
+  {
+   "name": "Sunsilk Damage Restore Shampoo 320(±)20ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3004799",
+   "price": 725,
+   "regular_price": 725,
+   "url": "https://www.shwapno.com/sunsilk-damage-restore-shampoo-35020ml-2"
+  },
+  {
+   "name": "Sunsilk Nourishing Soft & Smooth Shampoo 320(±)20ml",
+   "category": "Personal Care",
+   "shwapno_sku": "3005219",
+   "price": 725,
+   "regular_price": 725,
+   "url": "https://www.shwapno.com/sunsilk-nourishing-soft-and-smooth-shampoo-32020ml-2"
+  },
+  {
+   "name": "Lifebuoy Total 10 Hand Wash 1Ltr.",
+   "category": "Personal Care",
+   "shwapno_sku": "3015703",
+   "price": 450,
+   "regular_price": 450,
+   "url": "https://www.shwapno.com/lifebuoy-total-10-hand-wash-1ltr-"
+  },
+  {
+   "name": "Lifebuoy Lemon Fresh Hand Wash 1Ltr.",
+   "category": "Personal Care",
+   "shwapno_sku": "3016396",
+   "price": 450,
+   "regular_price": 450,
+   "url": "https://www.shwapno.com/lifebuoy-lemon-fresh-hand-wash-1ltr-"
+  },
+  {
+   "name": "Lifebuoy Total 10 Hand Wash 200ml (Pump)",
+   "category": "Personal Care",
+   "shwapno_sku": "3000678",
+   "price": 110,
+   "regular_price": 110,
+   "url": "https://www.shwapno.com/lifebuoy-total-10-hand-wash-200-ml-pump"
+  },
+  {
+   "name": "Lifebuoy Hand Wash Lemon Fresh 200ml (Pump)",
+   "category": "Personal Care",
+   "shwapno_sku": "3014888",
+   "price": 130,
+   "regular_price": 130,
+   "url": "https://www.shwapno.com/lifebuoy-hand-wash-lemon-fresh-200-ml-pump"
+  },
+  {
+   "name": "Lifebuoy Mild Care Handwash 200ml (Pump)",
+   "category": "Personal Care",
+   "shwapno_sku": "3000679",
+   "price": 130,
+   "regular_price": 130,
+   "url": "https://www.shwapno.com/lifebuoy-mild-care-handwash-pump-200ml"
+  },
+  {
+   "name": "Lemon Bright Dish Wash Liquid 500gm (Buy2 Get1 Free)",
+   "category": "Cleaning",
+   "shwapno_sku": "2604034",
+   "price": 300,
+   "regular_price": 300,
+   "url": "https://www.shwapno.com/lemon-bright-dish-wash-500gm-buy-2-get-1-free"
+  },
+  {
+   "name": "Trix Lemon Dish Washing Liquid 1Ltr.",
+   "category": "Cleaning",
+   "shwapno_sku": "2604210",
+   "price": 270,
+   "regular_price": 270,
+   "url": "https://www.shwapno.com/trix-dishwashing-liquid-1-liter-lemon"
+  },
+  {
+   "name": "Lemon Bright Dish Wash Liquid (500ml+250ml Combo)",
+   "category": "Cleaning",
+   "shwapno_sku": "2603755",
+   "price": 150,
+   "regular_price": 150,
+   "url": "https://www.shwapno.com/lemon-bright-liquid-wash-500ml-buy-1-get-250ml-free"
+  },
+  {
+   "name": "Trix Liquid Lemon 500ml",
+   "category": "Cleaning",
+   "shwapno_sku": "2600103",
+   "price": 150,
+   "regular_price": 150,
+   "url": "https://www.shwapno.com/trix-dishwashing-liquid-lemon-500ml-bottle-for-sparkling-clean-dishes"
+  },
+  {
+   "name": "Trix Liquid Lemon 250ml",
+   "category": "Cleaning",
+   "shwapno_sku": "2600105",
+   "price": 70,
+   "regular_price": 70,
+   "url": "https://www.shwapno.com/trix-dishwashing-liquid-lemon-250ml-refill-for-sparkling-clean-dishes"
+  },
+  {
+   "name": "Harpic Flush Matic Marine In Cistern Toilet Cleaner 2X50gm",
+   "category": "Cleaning",
+   "shwapno_sku": "2604258",
+   "price": 310,
+   "regular_price": 310,
+   "url": "https://www.shwapno.com/harpic-flush-matic-marine-in-cistern-toilet-cleaner-2x50gm"
+  },
+  {
+   "name": "Harpic Flush Matic Citrus In Cistern Toilet Cleaner 2X50gm",
+   "category": "Cleaning",
+   "shwapno_sku": "2604259",
+   "price": 310,
+   "regular_price": 310,
+   "url": "https://www.shwapno.com/harpic-flush-matic-citrus-in-cistern-toilet-cleaner-2x50gm"
+  },
+  {
+   "name": "Harpic Manik Jor Offer (Save 20 tk)",
+   "category": "Cleaning",
+   "shwapno_sku": "2603363",
+   "price": 310,
+   "regular_price": 310,
+   "url": "https://www.shwapno.com/harpic-750ml-toilet-cleaner-and-500ml-bathroom-cleaner-liquid-manikjor-offer"
+  },
+  {
+   "name": "Harpic Power Plus Toilet Cleaner 1Ltr.",
+   "category": "Cleaning",
+   "shwapno_sku": "2601252",
+   "price": 245,
+   "regular_price": 245,
+   "url": "https://www.shwapno.com/harpic-power-plus-toilet-cleaner-1litre"
+  },
+  {
+   "name": "Fay 4 Fold Napkin 100Pcs",
+   "category": "Cleaning",
+   "shwapno_sku": "2603095",
+   "price": 65,
+   "regular_price": 65,
+   "url": "https://www.shwapno.com/fay-4-fold-napkin-100-pcs"
+  },
+  {
+   "name": "Fay Toilet Tissues 220 Sheets",
+   "category": "Cleaning",
+   "shwapno_sku": "2603094",
+   "price": 40,
+   "regular_price": 40,
+   "url": "https://www.shwapno.com/fay-toilet-tissues-220-sheets"
+  },
+  {
+   "name": "Fay Toilet Paper",
+   "category": "Cleaning",
+   "shwapno_sku": "2600132",
+   "price": 30,
+   "regular_price": 30,
+   "url": "https://www.shwapno.com/fay-toilet-paper"
+  },
+  {
+   "name": "Discovery Organic Apple Cider Vinegar 1Ltr.",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2703567",
+   "price": 1395,
+   "regular_price": 1395,
+   "url": "https://www.shwapno.com/discovery-organic-apple-cider-vinegar-1l-2"
+  },
+  {
+   "name": "Pran Jugol Chutney 300gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2702597",
+   "price": 190,
+   "regular_price": 190,
+   "url": "https://www.shwapno.com/pran-jugol-chutney-300gm-2"
+  },
+  {
+   "name": "Pran Boroi Sweet Pickle 350gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2700001",
+   "price": 180,
+   "regular_price": 180,
+   "url": "https://www.shwapno.com/pran-boroi-sweet-pickle-350-gm"
+  },
+  {
+   "name": "Pran Kasundi 285(±)15gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2701889",
+   "price": 65,
+   "regular_price": 65,
+   "url": "https://www.shwapno.com/pran-kasundi-28515gm-2"
+  },
+  {
+   "name": "Ruchi Mixed Pickle 400gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2700027",
+   "price": 200,
+   "regular_price": 200,
+   "url": "https://www.shwapno.com/ruchi-mixed-pickle-400gm"
+  },
+  {
+   "name": "Ruchi Garlic Pickle 200gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2700013",
+   "price": 165,
+   "regular_price": 165,
+   "url": "https://www.shwapno.com/ruchi-garlic-pickle-200gm"
+  },
+  {
+   "name": "Allah Shafi Honey 80gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2816485",
+   "price": 185,
+   "regular_price": 185,
+   "url": "https://www.shwapno.com/allah-shafi-honey-80gm"
+  },
+  {
+   "name": "Dabur Honey 1kg",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2804035",
+   "price": 990,
+   "regular_price": 990,
+   "url": "https://www.shwapno.com/dabur-honey-1kg"
+  },
+  {
+   "name": "Dabur Honey 500gm",
+   "category": "Sauces & Honey",
+   "shwapno_sku": "2802696",
+   "price": 550,
+   "regular_price": 550,
+   "url": "https://www.shwapno.com/dabur-honey-500gm"
+  }
+ ]
+}
